@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///C:/Users/joann/Downloads/business_dashboard.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Business Dashboard</title>
+<style>
+/* ── DESIGN TOKENS ─────────────────────────────────────────────── */
+:root {
+  --ink:        #0F1117;
+  --ink-2:      #2D3142;
+  --ink-3:      #5C6070;
+  --surface:    #F7F8FC;
+  --surface-2:  #EDEEF5;
+  --surface-3:  #E0E2EF;
+  --white:      #FFFFFF;
+  --accent:     #4361EE;
+  --accent-2:   #3A0CA3;
+  --accent-3:   #7209B7;
+  --green:      #06D6A0;
+  --amber:      #F8961E;
+  --red:        #EF233C;
+  --cyan:       #4CC9F0;
+  --sidebar-w:  240px;
+  --header-h:   60px;
+  --radius:     10px;
+  --shadow:     0 2px 12px rgba(15,17,23,.08);
+  --shadow-lg:  0 8px 32px rgba(15,17,23,.14);
+  --font-ui:    'Inter', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Fira Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-ui);background:var(--surface);color:var(--ink);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:inherit;outline:none}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:99px}
+
+/* ── LAYOUT ─────────────────────────────────────────────────────── */
+#app{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--ink);color:var(--white);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;transition:transform .25s}
+.sidebar-logo{padding:20px 18px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent-3));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;letter-spacing:-0.5px;flex-shrink:0}
+.logo-text{font-weight:700;font-size:16px;letter-spacing:-.3px}
+.logo-text span{color:var(--accent);opacity:.7;font-size:11px;font-weight:500;display:block;letter-spacing:.5px}
+.sidebar-section{padding:10px 0}
+.sidebar-label{padding:8px 18px 4px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;border-radius:0;transition:background .15s;position:relative;font-size:13.5px;color:rgba(255,255,255,.65);font-weight:500}
+.nav-item:hover{background:rgba(255,255,255,.07);color:var(--white)}
+.nav-item.active{background:rgba(67,97,238,.25);color:var(--white)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
+.nav-icon{width:18px;height:18px;flex-shrink:0;opacity:.8}
+.nav-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px}
+.sidebar-user{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
+.user-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--cyan));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:11px;color:rgba(255,255,255,.4);margin-top:1px}
+.user-switch{font-size:11px;color:var(--accent);cursor:pointer;padding:3px 8px;background:rgba(67,97,238,.2);border-radius:5px;white-space:nowrap}
+
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:var(--header-h);background:var(--white);border-bottom:1px solid var(--surface-3);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow)}
+.topbar-title{font-size:17px;font-weight:700;letter-spacing:-.3px;flex:1}
+.topbar-title span{font-weight:400;color:var(--ink-3);font-size:13px;margin-left:8px}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:7px;font-size:13px;font-weight:600;transition:all .15s;cursor:pointer}
+.btn-primary{background:var(--accent);color:var(--white)}
+.btn-primary:hover{background:var(--accent-2)}
+.btn-ghost{background:transparent;color:var(--ink-3);border:1px solid var(--surface-3)}
+.btn-ghost:hover{background:var(--surface-2);color:var(--ink)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-success{background:var(--green);color:var(--ink)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.page{padding:24px;flex:1;display:none}
+.page.active{display:block}
+
+/* ── CARDS ──────────────────────────────────────────────────────── */
+.card{background:var(--white);border-radius:var(--radius);border:1px solid var(--surface-3);box-shadow:var(--shadow)}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--surface-3);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-title{font-size:14px;font-weight:700;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+
+/* ── KPI GRID ────────────────────────────────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:22px}
+.kpi{background:var(--white);border:1px solid var(--surface-3);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.kpi-label{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.kpi-value{font-size:26px;font-weight:800;letter-spacing:-1px;color:var(--ink)}
+.kpi-sub{font-size:11.5px;color:var(--ink-3);margin-top:4px;display:flex;align-items:center;gap:4px}
+.kpi-sub .up{color:var(--green)}
+.kpi-sub .dn{color:var(--red)}
+.kpi-accent{border-top:3px solid var(--accent)}
+.kpi-green{border-top:3px solid var(--green)}
+.kpi-amber{border-top:3px solid var(--amber)}
+.kpi-red{border-top:3px solid var(--red)}
+.kpi-cyan{border-top:3px solid var(--cyan)}
+
+/* ── GRID LAYOUTS ────────────────────────────────────────────────── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.span-2{grid-column:span 2}
+.span-3{grid-column:span 3}
+
+/* ── TABLES ──────────────────────────────────────────────────────── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--surface-2);color:var(--ink-3);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--surface-3)}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--surface-2);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surface)}
+
+/* ── BADGES ──────────────────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-green{background:#e8faf5;color:#059669}
+.badge-red{background:#fde8ec;color:#c41035}
+.badge-amber{background:#fff3e0;color:#b45309}
+.badge-blue{background:#e8edff;color:#2d4fcc}
+.badge-purple{background:#f0e8ff;color:#7c3aed}
+.badge-gray{background:var(--surface-2);color:var(--ink-3)}
+.badge-cyan{background:#e0f7ff;color:#0284c7}
+
+/* ── FORMS ───────────────────────────────────────────────────────── */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+.form-input,.form-select,.form-textarea{width:100%;padding:9px 12px;border:1px solid var(--surface-3);border-radius:7px;font-size:13.5px;color:var(--ink);background:var(--white);transition:border-color .15s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(67,97,238,.1)}
+.form-textarea{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* ── MODAL ───────────────────────────────────────────────────────── */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,17,23,.55);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--white);border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);margin:20px}
+.modal-header{padding:20px 24px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--surface-3)}
+.modal-title{font-size:16px;font-weight:700;color:var(--ink)}
+.modal-close{width:30px;height:30px;background:var(--surface-2);border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--ink-3)}
+.modal-close:hover{background:var(--surface-3)}
+.modal-body{padding:20px 24px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--surface-3);display:flex;justify-content:flex-end;gap:10px}
+
+/* ── TABS ────────────────────────────────────────────────────────── */
+.tabs{display:flex;gap:2px;background:var(--surface-2);padding:4px;border-radius:9px;margin-bottom:20px;width:fit-content}
+.tab{padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;color:var(--ink-3);cursor:pointer;transition:all .15s}
+.tab.active{background:var(--white);color:var(--ink);box-shadow:var(--shadow)}
+
+/* ── UPLOAD ZONE ────────────────────────────────────────────────── */
+.upload-zone{border:2px dashed var(--surface-3);border-radius:var(--radius);padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:#f0f3ff}
+.upload-zone .uz-icon{font-size:36px;margin-bottom:12px;display:block}
+.upload-zone h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.upload-zone p{font-size:12.5px;color:var(--ink-3)}
+.upload-zone input[type=file]{display:none}
+
+/* ── CALENDAR ───────────────────────────────────────────────────── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day-name{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ink-3);text-align:center;padding:8px 0}
+.cal-day{min-height:80px;background:var(--white);border:1px solid var(--surface-3);border-radius:6px;padding:6px;position:relative;cursor:pointer;transition:border-color .15s}
+.cal-day:hover{border-color:var(--accent)}
+.cal-day.today{border-color:var(--accent);background:#f0f3ff}
+.cal-day.other-month .cal-day-num{color:var(--surface-3)}
+.cal-day-num{font-size:12px;font-weight:700;color:var(--ink-3);margin-bottom:4px}
+.cal-day.today .cal-day-num{color:var(--accent)}
+.cal-event{font-size:10px;padding:2px 5px;border-radius:4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.cal-event.leave{background:#fde8ec;color:#c41035}
+.cal-event.wfh{background:#e0f7ff;color:#0284c7}
+.cal-event.meeting{background:#e8edff;color:#2d4fcc}
+.cal-event.holiday{background:#e8faf5;color:#059669}
+
+/* ── CHART PLACEHOLDER ──────────────────────────────────────────── */
+.chart-area{width:100%;height:180px;background:linear-gradient(180deg,var(--surface) 0%,var(--white) 100%);border-radius:8px;position:relative;overflow:hidden;display:flex;align-items:flex-end;gap:3px;padding:10px 10px 0}
+.chart-bar{flex:1;border-radius:4px 4px 0 0;transition:height .6s ease;min-height:4px}
+.chart-line-svg{width:100%;height:100%;position:absolute;inset:0}
+
+/* ── PROGRESS ───────────────────────────────────────────────────── */
+.progress-bar{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;border-radius:99px;transition:width .6s ease}
+
+/* ── NOTIFICATION ───────────────────────────────────────────────── */
+.toast-container{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--ink);color:var(--white);padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;animation:toastIn .25s ease;max-width:320px}
+.toast.success{background:#059669}
+.toast.error{background:var(--red)}
+.toast.info{background:var(--accent)}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+
+/* ── PAGE-SPECIFIC ──────────────────────────────────────────────── */
+.section-title{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-bottom:16px;color:var(--ink);display:flex;align-items:center;gap:8px}
+.divider{height:1px;background:var(--surface-3);margin:20px 0}
+.empty-state{text-align:center;padding:40px 20px;color:var(--ink-3)}
+.empty-state .em-icon{font-size:40px;margin-bottom:12px;display:block;opacity:.4}
+.empty-state p{font-size:13px}
+
+/* ── LOGIN ───────────────────────────────────────────────────────── */
+#login-screen{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:var(--white);border-radius:16px;width:380px;padding:36px;box-shadow:var(--shadow-lg)}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.login-logo .logo-mark{width:40px;height:40px;font-size:18px}
+.login-logo .logo-text{font-size:20px}
+.login-box h2{font-size:22px;font-weight:800;margin-bottom:4px;text-align:center}
+.login-box p{font-size:13px;color:var(--ink-3);margin-bottom:22px;text-align:center}
+.user-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.user-card{border:2px solid var(--surface-3);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;text-align:center}
+.user-card:hover{border-color:var(--accent);background:#f0f3ff}
+.user-card.selected{border-color:var(--accent);background:#f0f3ff}
+.user-card .uc-avatar{width:40px;height:40px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff}
+.user-card .uc-name{font-size:13px;font-weight:700}
+.user-card .uc-role{font-size:11px;color:var(--ink-3)}
+
+/* ── RECEIPT SCANNER ─────────────────────────────────────────────── */
+.scan-result{background:var(--surface);border:1px solid var(--surface-3);border-radius:var(--radius);padding:16px;margin-top:16px}
+.scan-field{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--surface-3);font-size:13px}
+.scan-field:last-child{border-bottom:none}
+.scan-field-label{color:var(--ink-3);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px}
+.scan-field-val{font-weight:700}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────── */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:none}
+  .main{margin-left:0}
+  .grid-2,.grid-3,.grid-2-1,.form-row,.form-row-3{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .span-2,.span-3{grid-column:span 1}
+  .cal-grid{grid-template-columns:repeat(7,1fr)}
+  .cal-day{min-height:50px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="logo-mark">N</div>
+      <div class="logo-text">Nexus<span>BUSINESS SUITE</span></div>
+    </div>
+    <h2>Welcome back</h2>
+    <p>Select your profile to continue</p>
+    <div class="user-select-grid" id="userSelectGrid"><div class="user-card"><div class="uc-avatar" style="background:#4361EE">SJ</div><div class="uc-name">Sarah Johnson</div><div class="uc-role">Admin</div></div><div class="user-card"><div class="uc-avatar" style="background:#7209B7">MW</div><div class="uc-name">Marcus Williams</div><div class="uc-role">Manager</div></div><div class="user-card"><div class="uc-avatar" style="background:#06D6A0">PP</div><div class="uc-name">Priya Patel</div><div class="uc-role">Staff</div></div><div class="user-card"><div class="uc-avatar" style="background:#F8961E">TC</div><div class="uc-name">Tom Chen</div><div class="uc-role">Finance</div></div></div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" id="loginPass" placeholder="Enter password (any for demo)">
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:11px" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app" style="display:none">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">N</div>
+      <div class="logo-text">Nexus<span>BUSINESS SUITE</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <div class="nav-item active" onclick="showPage(&#39;dashboard&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;calendar&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        Calendar
+        <span class="nav-badge">3</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Finance</div>
+      <div class="nav-item" onclick="showPage(&#39;sales&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+        Sales Receipts
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;expenses&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        Expenses
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;payroll&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+        Payroll
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">People</div>
+      <div class="nav-item" onclick="showPage(&#39;employees&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Employees
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;contractors&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        Contractors
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;eor&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        EOR Database
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Workforce</div>
+      <div class="nav-item" onclick="showPage(&#39;absences&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        Absence Management
+        <span class="nav-badge">2</span>
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;holidays&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"></path><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path></svg>
+        Holiday Management
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;wfh&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Work From Home
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Documents</div>
+      <div class="nav-item" onclick="showPage(&#39;scanner&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+        Receipt Scanner
+      </div>
+      <div class="nav-item" onclick="showPage(&#39;pdftools&#39;,this)">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+        PDF → Spreadsheet
+      </div>
+    </div>
+    <div class="sidebar-user" id="sidebarUser"></div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <button class="btn btn-ghost btn-sm" id="menuToggle" onclick="toggleSidebar()" style="display:none">☰</button>
+      <div class="topbar-title" id="topbarTitle">Dashboard <span>Overview</span></div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm" onclick="showModal(&#39;quickAddModal&#39;)">+ Quick Add</button>
+        <button class="btn btn-primary btn-sm" onclick="showPage(&#39;scanner&#39;,null)">📷 Scan Receipt</button>
+        <button class="btn btn-ghost btn-sm" onclick="doLogout()" style="color:var(--red)">⏻</button>
+      </div>
+    </header>
+
+    <!-- PAGES -->
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="kpi-grid" id="kpiGrid"></div>
+      <div class="grid-2-1" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📊 Revenue vs Expenses</div>
+            <select class="form-select" style="width:120px;padding:5px 8px;font-size:12px">
+              <option>Last 6 months</option><option>This year</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <canvas id="revenueChart" height="180"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">🏢 Workforce</div></div>
+          <div class="card-body" id="workforceWidget"></div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-header"><div class="card-title">⏳ Pending Approvals</div><span class="badge badge-red" id="pendingCount">0</span></div>
+          <div class="card-body" id="pendingApprovals"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">📅 Upcoming Events</div></div>
+          <div class="card-body" id="upcomingEvents"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">💳 Recent Transactions</div><button class="btn btn-ghost btn-sm" onclick="showPage(&#39;sales&#39;,null)">View All</button></div>
+        <div class="card-body"><div class="table-wrap" id="recentTxTable"></div></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="page" id="page-calendar">
+      <div class="grid-2-1">
+        <div class="card">
+          <div class="card-header">
+            <button class="btn btn-ghost btn-sm" id="calPrev" onclick="calNav(-1)">‹</button>
+            <div class="card-title" id="calMonthTitle" style="flex:1;justify-content:center;font-size:16px"></div>
+            <button class="btn btn-ghost btn-sm" id="calNext" onclick="calNav(1)">›</button>
+          </div>
+          <div class="card-body">
+            <div class="cal-grid" id="calDayNames"></div>
+            <div class="cal-grid" id="calDays" style="margin-top:4px"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-header"><div class="card-title">📋 Legend</div></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+                <span><span class="badge badge-red">●</span> Annual Leave / Sick Day</span>
+                <span><span class="badge badge-cyan">●</span> Work From Home</span>
+                <span><span class="badge badge-blue">●</span> Meeting / Event</span>
+                <span><span class="badge badge-green">●</span> Public Holiday</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">➕ Add Event</div></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input type="date" class="form-input" id="calEventDate">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Type</label>
+                <select class="form-select" id="calEventType">
+                  <option value="leave">Annual Leave</option>
+                  <option value="wfh">Work From Home</option>
+                  <option value="meeting">Meeting</option>
+                  <option value="holiday">Holiday</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-input" id="calEventTitle" placeholder="Event title">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Person (if applicable)</label>
+                <select class="form-select" id="calEventPerson">
+                  <option value="">— All Staff —</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="addCalEvent()">Add to Calendar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALES -->
+    <div class="page" id="page-sales">
+      <div class="kpi-grid" id="salesKpi"></div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">💰 Sales Receipts</div>
+          <div style="display:flex;gap:8px">
+            <input class="form-input" style="width:180px;padding:6px 10px;font-size:12px" placeholder="Search..." oninput="filterTable(&#39;salesTable&#39;,this.value)">
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addSaleModal&#39;)">+ Add Receipt</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;salesTable&#39;,&#39;sales_receipts&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="salesTable"></div></div>
+      </div>
+    </div>
+
+    <!-- EXPENSES -->
+    <div class="page" id="page-expenses">
+      <div class="kpi-grid" id="expKpi"></div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🧾 Expenses</div>
+          <div style="display:flex;gap:8px">
+            <select class="form-select" style="width:140px;padding:6px 8px;font-size:12px" onchange="filterExpCategory(this.value)">
+              <option value="">All Categories</option>
+              <option>Travel</option><option>Office Supplies</option><option>Software</option>
+              <option>Meals</option><option>Equipment</option><option>Other</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addExpModal&#39;)">+ Add Expense</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;expTable&#39;,&#39;expenses&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="expTable"></div></div>
+      </div>
+    </div>
+
+    <!-- PAYROLL -->
+    <div class="page" id="page-payroll">
+      <div class="kpi-grid" id="payKpi"></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">
+          <div class="card-title">💼 Payroll Register</div>
+          <div style="display:flex;gap:8px">
+            <select class="form-select" style="width:160px;padding:6px 8px;font-size:12px" id="payrollPeriod" onchange="renderPayroll()">
+              <option>June 2025</option><option>May 2025</option><option>April 2025</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addPayrollModal&#39;)">+ Add Entry</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;payrollTable&#39;,&#39;payroll&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="payrollTable"></div></div>
+      </div>
+    </div>
+
+    <!-- EMPLOYEES -->
+    <div class="page" id="page-employees">
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">
+          <div class="card-title">👥 Employee Database</div>
+          <div style="display:flex;gap:8px">
+            <input class="form-input" style="width:200px;padding:6px 10px;font-size:12px" placeholder="Search employees..." oninput="filterTable(&#39;empTable&#39;,this.value)">
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addEmpModal&#39;)">+ Add Employee</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;empTable&#39;,&#39;employees&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="empTable"></div></div>
+      </div>
+    </div>
+
+    <!-- CONTRACTORS -->
+    <div class="page" id="page-contractors">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🤝 Contractor Database</div>
+          <div style="display:flex;gap:8px">
+            <input class="form-input" style="width:200px;padding:6px 10px;font-size:12px" placeholder="Search..." oninput="filterTable(&#39;conTable&#39;,this.value)">
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addConModal&#39;)">+ Add Contractor</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;conTable&#39;,&#39;contractors&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="conTable"></div></div>
+      </div>
+    </div>
+
+    <!-- EOR -->
+    <div class="page" id="page-eor">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🌍 Employer of Record (EOR) Database</div>
+          <div style="display:flex;gap:8px">
+            <input class="form-input" style="width:200px;padding:6px 10px;font-size:12px" placeholder="Search..." oninput="filterTable(&#39;eorTable&#39;,this.value)">
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addEorModal&#39;)">+ Add EOR Worker</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;eorTable&#39;,&#39;eor&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="eorTable"></div></div>
+      </div>
+    </div>
+
+    <!-- ABSENCES -->
+    <div class="page" id="page-absences">
+      <div class="kpi-grid" id="absKpi"></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-header"><div class="card-title">⚠️ Pending Absence Requests</div></div>
+          <div class="card-body"><div class="table-wrap" id="pendingAbsTable"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">📊 Absence by Type</div></div>
+          <div class="card-body" id="absChart"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 All Absence Records</div>
+          <div style="display:flex;gap:8px">
+            <select class="form-select" style="width:140px;padding:6px 8px;font-size:12px">
+              <option>All Types</option><option>Sick</option><option>Annual Leave</option><option>Compassionate</option><option>Unauthorised</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addAbsModal&#39;)">+ Record Absence</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;absTable&#39;,&#39;absences&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="absTable"></div></div>
+      </div>
+    </div>
+
+    <!-- HOLIDAYS -->
+    <div class="page" id="page-holidays">
+      <div class="kpi-grid" id="holKpi"></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-header"><div class="card-title">📅 Holiday Balances</div></div>
+          <div class="card-body"><div class="table-wrap" id="holBalTable"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">⏳ Pending Requests</div></div>
+          <div class="card-body"><div class="table-wrap" id="holPendTable"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🏖️ Holiday Requests</div>
+          <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addHolModal&#39;)">+ Request Holiday</button>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="holTable"></div></div>
+      </div>
+    </div>
+
+    <!-- WFH -->
+    <div class="page" id="page-wfh">
+      <div class="kpi-grid" id="wfhKpi"></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">
+          <div class="card-title">🏠 Work From Home Log</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary btn-sm" onclick="showModal(&#39;addWfhModal&#39;)">+ Log WFH</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV(&#39;wfhTable&#39;,&#39;wfh&#39;)">⬇ CSV</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="wfhTable"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📊 WFH by Department</div></div>
+        <div class="card-body" id="wfhDeptChart"></div>
+      </div>
+    </div>
+
+    <!-- RECEIPT SCANNER -->
+    <div class="page" id="page-scanner">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">📷 Receipt Scanner</div></div>
+          <div class="card-body">
+            <p style="font-size:13px;color:var(--ink-3);margin-bottom:16px">Upload or drag a receipt image or PDF. The parser will extract key fields automatically.</p>
+            <div class="upload-zone" id="scanUploadZone" onclick="document.getElementById(&#39;scanFileInput&#39;).click()" ondragover="event.preventDefault();this.classList.add(&#39;drag-over&#39;)" ondragleave="this.classList.remove(&#39;drag-over&#39;)" ondrop="handleScanDrop(event)">
+              <input type="file" id="scanFileInput" accept="image/*,.pdf" onchange="handleScanFile(this.files[0])">
+              <span class="uz-icon">📄</span>
+              <h4>Drop receipt here or click to browse</h4>
+              <p>Supports JPG, PNG, PDF • Max 10 MB</p>
+            </div>
+            <div id="scanPreview" style="margin-top:16px;display:none">
+              <img id="scanImg" style="max-width:100%;border-radius:8px;border:1px solid var(--surface-3)">
+            </div>
+            <div id="scanResult"></div>
+            <div id="scanActions" style="display:none;margin-top:14px;display:none">
+              <div class="form-group">
+                <label class="form-label">Save to Category</label>
+                <select class="form-select" id="scanCategory">
+                  <option>Sales Receipts</option><option>Expenses</option><option>Payroll</option>
+                </select>
+              </div>
+              <button class="btn btn-success" style="width:100%;justify-content:center" onclick="saveScannedReceipt()">✓ Save Receipt</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">📋 Scanned History</div></div>
+          <div class="card-body"><div class="table-wrap" id="scannedTable"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PDF TOOLS -->
+    <div class="page" id="page-pdftools">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">📄 PDF → Spreadsheet</div></div>
+          <div class="card-body">
+            <p style="font-size:13px;color:var(--ink-3);margin-bottom:16px">Upload any PDF (invoice, statement, report). The tool extracts tabular data and converts it to a downloadable CSV spreadsheet.</p>
+            <div class="upload-zone" id="pdfUploadZone" onclick="document.getElementById(&#39;pdfFileInput&#39;).click()" ondragover="event.preventDefault();this.classList.add(&#39;drag-over&#39;)" ondragleave="this.classList.remove(&#39;drag-over&#39;)" ondrop="handlePdfDrop(event)">
+              <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" onchange="handlePdfFile(this.files[0])">
+              <span class="uz-icon">📊</span>
+              <h4>Drop PDF here or click to browse</h4>
+              <p>Any PDF — invoices, bank statements, reports</p>
+            </div>
+            <div id="pdfStatus" style="margin-top:16px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">📋 Extracted Data Preview</div></div>
+          <div class="card-body">
+            <div id="pdfPreviewTable">
+              <div class="empty-state"><span class="em-icon">📂</span><p>Upload a PDF to preview extracted data</p></div>
+            </div>
+            <div id="pdfDownloadArea" style="margin-top:14px;display:none">
+              <button class="btn btn-success" style="width:100%;justify-content:center" onclick="downloadExtractedCSV()">⬇ Download as CSV</button>
+              <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:8px" onclick="saveToExpenses()">💾 Save to Expenses</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="quickAddModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">⚡ Quick Add</div><div class="modal-close" onclick="closeModal(&#39;quickAddModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="grid-2" style="gap:10px">
+        <button class="btn btn-ghost" style="justify-content:center;padding:16px;flex-direction:column;gap:6px;height:80px" onclick="closeModal(&#39;quickAddModal&#39;);showPage(&#39;sales&#39;,null);showModal(&#39;addSaleModal&#39;)">💰<span style="font-size:11px">Sales Receipt</span></button>
+        <button class="btn btn-ghost" style="justify-content:center;padding:16px;flex-direction:column;gap:6px;height:80px" onclick="closeModal(&#39;quickAddModal&#39;);showPage(&#39;expenses&#39;,null);showModal(&#39;addExpModal&#39;)">🧾<span style="font-size:11px">Expense</span></button>
+        <button class="btn btn-ghost" style="justify-content:center;padding:16px;flex-direction:column;gap:6px;height:80px" onclick="closeModal(&#39;quickAddModal&#39;);showPage(&#39;absences&#39;,null);showModal(&#39;addAbsModal&#39;)">⚠️<span style="font-size:11px">Absence</span></button>
+        <button class="btn btn-ghost" style="justify-content:center;padding:16px;flex-direction:column;gap:6px;height:80px" onclick="closeModal(&#39;quickAddModal&#39;);showPage(&#39;holidays&#39;,null);showModal(&#39;addHolModal&#39;)">🏖️<span style="font-size:11px">Holiday</span></button>
+        <button class="btn btn-ghost" style="justify-content:center;padding:16px;flex-direction:column;gap:6px;height:80px" onclick="closeModal(&#39;quickAddModal&#39;);showPage(&#39;wfh&#39;,null);showModal(&#39;addWfhModal&#39;)">🏠<span style="font-size:11px">WFH Day</span></button>
+        <button class="btn btn-ghost" style="justify-content:center;padding:16px;flex-direction:column;gap:6px;height:80px" onclick="closeModal(&#39;quickAddModal&#39;);showPage(&#39;employees&#39;,null);showModal(&#39;addEmpModal&#39;)">👤<span style="font-size:11px">New Employee</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Sale Modal -->
+<div class="modal-backdrop" id="addSaleModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">💰 Add Sales Receipt</div><div class="modal-close" onclick="closeModal(&#39;addSaleModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Receipt #</label><input class="form-input" id="s_ref" placeholder="INV-001"></div>
+        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="s_date"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Customer</label><input class="form-input" id="s_cust" placeholder="Customer name"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Amount (£)</label><input type="number" class="form-input" id="s_amt" placeholder="0.00"></div>
+        <div class="form-group"><label class="form-label">VAT (£)</label><input type="number" class="form-input" id="s_vat" placeholder="0.00"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-select" id="s_cat">
+            <option>Product Sale</option><option>Service</option><option>Subscription</option><option>Consulting</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="s_status">
+            <option>Paid</option><option>Pending</option><option>Overdue</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" id="s_notes" placeholder="Optional notes..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addSaleModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addSale()">Save Receipt</button></div>
+  </div>
+</div>
+
+<!-- Add Expense Modal -->
+<div class="modal-backdrop" id="addExpModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">🧾 Add Expense</div><div class="modal-close" onclick="closeModal(&#39;addExpModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="e_date"></div>
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-select" id="e_cat">
+            <option>Travel</option><option>Office Supplies</option><option>Software</option><option>Meals</option><option>Equipment</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><input class="form-input" id="e_desc" placeholder="What was this expense for?"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Amount (£)</label><input type="number" class="form-input" id="e_amt" placeholder="0.00"></div>
+        <div class="form-group"><label class="form-label">Submitted by</label>
+          <select class="form-select" id="e_who"></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Receipt (optional)</label>
+        <input type="file" class="form-input" id="e_receipt" accept="image/*,.pdf" style="padding:6px">
+      </div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-select" id="e_status"><option>Pending Approval</option><option>Approved</option><option>Rejected</option></select>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addExpModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addExpense()">Save Expense</button></div>
+  </div>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal-backdrop" id="addEmpModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">👤 Add Employee</div><div class="modal-close" onclick="closeModal(&#39;addEmpModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="em_fname"></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="em_lname"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="em_email"></div>
+        <div class="form-group"><label class="form-label">Department</label>
+          <select class="form-select" id="em_dept">
+            <option>Engineering</option><option>Sales</option><option>Marketing</option><option>Finance</option><option>HR</option><option>Operations</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Job Title</label><input class="form-input" id="em_title"></div>
+        <div class="form-group"><label class="form-label">Start Date</label><input type="date" class="form-input" id="em_start"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Salary (£/yr)</label><input type="number" class="form-input" id="em_salary"></div>
+        <div class="form-group"><label class="form-label">Contract Type</label>
+          <select class="form-select" id="em_contract">
+            <option>Full-time</option><option>Part-time</option><option>Fixed-term</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Holiday Allowance (days)</label><input type="number" class="form-input" id="em_hol" value="25"></div>
+        <div class="form-group"><label class="form-label">Access Role</label>
+          <select class="form-select" id="em_role">
+            <option>Staff</option><option>Manager</option><option>Admin</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addEmpModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addEmployee()">Add Employee</button></div>
+  </div>
+</div>
+
+<!-- Add Contractor Modal -->
+<div class="modal-backdrop" id="addConModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">🤝 Add Contractor</div><div class="modal-close" onclick="closeModal(&#39;addConModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Name / Company</label><input class="form-input" id="con_name"></div>
+        <div class="form-group"><label class="form-label">Contact Email</label><input type="email" class="form-input" id="con_email"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Specialty</label><input class="form-input" id="con_spec" placeholder="e.g. Frontend Dev, Copywriter"></div>
+        <div class="form-group"><label class="form-label">Day Rate (£)</label><input type="number" class="form-input" id="con_rate"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Contract Start</label><input type="date" class="form-input" id="con_start"></div>
+        <div class="form-group"><label class="form-label">Contract End</label><input type="date" class="form-input" id="con_end"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">IR35 Status</label>
+          <select class="form-select" id="con_ir35">
+            <option>Outside IR35</option><option>Inside IR35</option><option>TBC</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="con_status">
+            <option>Active</option><option>On Hold</option><option>Completed</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addConModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addContractor()">Add Contractor</button></div>
+  </div>
+</div>
+
+<!-- Add EOR Modal -->
+<div class="modal-backdrop" id="addEorModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">🌍 Add EOR Worker</div><div class="modal-close" onclick="closeModal(&#39;addEorModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="eor_name"></div>
+        <div class="form-group"><label class="form-label">Country</label><input class="form-input" id="eor_country" placeholder="e.g. Germany"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">EOR Provider</label><input class="form-input" id="eor_provider" placeholder="e.g. Deel, Remote, Papaya"></div>
+        <div class="form-group"><label class="form-label">Local Currency</label><input class="form-input" id="eor_currency" placeholder="e.g. EUR"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Monthly Cost (£)</label><input type="number" class="form-input" id="eor_cost"></div>
+        <div class="form-group"><label class="form-label">Start Date</label><input type="date" class="form-input" id="eor_start"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Role / Department</label><input class="form-input" id="eor_role"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addEorModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addEOR()">Add EOR Worker</button></div>
+  </div>
+</div>
+
+<!-- Add Absence Modal -->
+<div class="modal-backdrop" id="addAbsModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">⚠️ Record Absence</div><div class="modal-close" onclick="closeModal(&#39;addAbsModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Employee</label><select class="form-select" id="abs_emp"></select></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Start Date</label><input type="date" class="form-input" id="abs_start"></div>
+        <div class="form-group"><label class="form-label">End Date</label><input type="date" class="form-input" id="abs_end"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Type</label>
+          <select class="form-select" id="abs_type">
+            <option>Sick</option><option>Annual Leave</option><option>Compassionate</option><option>Maternity</option><option>Paternity</option><option>Unauthorised</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="abs_status"><option>Pending</option><option>Approved</option><option>Rejected</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Notes / Reason</label><textarea class="form-textarea" id="abs_notes"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addAbsModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addAbsence()">Record Absence</button></div>
+  </div>
+</div>
+
+<!-- Add Holiday Modal -->
+<div class="modal-backdrop" id="addHolModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">🏖️ Request Holiday</div><div class="modal-close" onclick="closeModal(&#39;addHolModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Employee</label><select class="form-select" id="hol_emp"></select></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">From</label><input type="date" class="form-input" id="hol_from"></div>
+        <div class="form-group"><label class="form-label">To</label><input type="date" class="form-input" id="hol_to"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" id="hol_notes"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addHolModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addHoliday()">Submit Request</button></div>
+  </div>
+</div>
+
+<!-- Add WFH Modal -->
+<div class="modal-backdrop" id="addWfhModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">🏠 Log WFH Day</div><div class="modal-close" onclick="closeModal(&#39;addWfhModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Employee</label><select class="form-select" id="wfh_emp"></select></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="wfh_date"></div>
+        <div class="form-group"><label class="form-label">Type</label>
+          <select class="form-select" id="wfh_type"><option>Full Day</option><option>Morning Only</option><option>Afternoon Only</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" id="wfh_notes"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addWfhModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addWFH()">Log WFH</button></div>
+  </div>
+</div>
+
+<!-- Add Payroll Modal -->
+<div class="modal-backdrop" id="addPayrollModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">💼 Add Payroll Entry</div><div class="modal-close" onclick="closeModal(&#39;addPayrollModal&#39;)">✕</div></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Employee</label><select class="form-select" id="pay_emp"></select></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Gross Pay (£)</label><input type="number" class="form-input" id="pay_gross"></div>
+        <div class="form-group"><label class="form-label">Tax (£)</label><input type="number" class="form-input" id="pay_tax"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">NI (£)</label><input type="number" class="form-input" id="pay_ni"></div>
+        <div class="form-group"><label class="form-label">Pension (£)</label><input type="number" class="form-input" id="pay_pension"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Pay Period</label><input class="form-input" id="pay_period" placeholder="e.g. June 2025"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal(&#39;addPayrollModal&#39;)">Cancel</button><button class="btn btn-primary" onclick="addPayrollEntry()">Add Entry</button></div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   NEXUS BUSINESS SUITE — FULL APPLICATION LOGIC
+   ═══════════════════════════════════════════════════════════ */
+
+// ── DATA STORE ───────────────────────────────────────────────
+const STORE_KEY = 'nexus_v3';
+let DB = loadDB();
+let currentUser = null;
+
+function loadDB(){
+  const raw = localStorage.getItem(STORE_KEY);
+  if(raw) return JSON.parse(raw);
+  return defaultDB();
+}
+function saveDB(){ localStorage.setItem(STORE_KEY, JSON.stringify(DB)); }
+
+function defaultDB(){
+  const today = new Date(); const td = fmtDate(today);
+  const emp = [
+    {id:'e1',fname:'Sarah',lname:'Johnson',email:'sarah@nexus.co',dept:'Engineering',title:'Lead Developer',salary:85000,start:'2021-03-15',contract:'Full-time',hol_allowance:25,hol_used:8,role:'Admin'},
+    {id:'e2',fname:'Marcus',lname:'Williams',email:'marcus@nexus.co',dept:'Sales',title:'Sales Manager',salary:72000,start:'2020-07-01',contract:'Full-time',hol_allowance:25,hol_used:12,role:'Manager'},
+    {id:'e3',fname:'Priya',lname:'Patel',email:'priya@nexus.co',dept:'Marketing',title:'Marketing Lead',salary:65000,start:'2022-01-10',contract:'Full-time',hol_allowance:25,hol_used:5,role:'Staff'},
+    {id:'e4',fname:'Tom',lname:'Chen',email:'tom@nexus.co',dept:'Finance',title:'Finance Analyst',salary:58000,start:'2023-04-01',contract:'Full-time',hol_allowance:25,hol_used:3,role:'Staff'},
+  ];
+  return {
+    users: [{id:'u1',name:'Sarah Johnson',role:'Admin',avatar:'SJ',color:'#4361EE'},
+            {id:'u2',name:'Marcus Williams',role:'Manager',avatar:'MW',color:'#7209B7'},
+            {id:'u3',name:'Priya Patel',role:'Staff',avatar:'PP',color:'#06D6A0'},
+            {id:'u4',name:'Tom Chen',role:'Finance',avatar:'TC',color:'#F8961E'}],
+    employees: emp,
+    contractors:[
+      {id:'c1',name:'Alex Rivera Dev Ltd',email:'alex@adev.io',spec:'React Developer',rate:600,start:'2025-01-05',end:'2025-06-30',ir35:'Outside IR35',status:'Active'},
+      {id:'c2',name:'Maya Stone Consulting',email:'maya@msc.com',spec:'UX Designer',rate:450,start:'2025-02-01',end:'2025-05-31',ir35:'Outside IR35',status:'Completed'},
+    ],
+    eor:[
+      {id:'r1',name:'Lena Müller',country:'Germany',provider:'Deel',currency:'EUR',cost:4800,start:'2024-09-01',role:'Backend Engineer'},
+      {id:'r2',name:'Carlos Diaz',country:'Spain',provider:'Remote',currency:'EUR',cost:4200,start:'2025-01-15',role:'Data Analyst'},
+    ],
+    sales:[
+      {id:'s1',ref:'INV-2025-001',date:'2025-06-01',customer:'Acme Corp',amount:12500,vat:2500,category:'Service',status:'Paid',notes:'Q2 consulting'},
+      {id:'s2',ref:'INV-2025-002',date:'2025-06-05',customer:'BlueSky Ltd',amount:4800,vat:960,category:'Product Sale',status:'Paid',notes:''},
+      {id:'s3',ref:'INV-2025-003',date:'2025-06-10',customer:'TechNova Inc',amount:18000,vat:3600,category:'Consulting',status:'Pending',notes:'Net 30'},
+      {id:'s4',ref:'INV-2025-004',date:'2025-06-12',customer:'Greenfield Co',amount:2200,vat:440,category:'Subscription',status:'Paid',notes:'Annual renewal'},
+    ],
+    expenses:[
+      {id:'x1',date:'2025-06-02',category:'Travel',desc:'London–Manchester train',amount:142.50,who:'Marcus Williams',status:'Approved'},
+      {id:'x2',date:'2025-06-05',category:'Software',desc:'Figma annual licence',amount:576,who:'Priya Patel',status:'Approved'},
+      {id:'x3',date:'2025-06-09',category:'Meals',desc:'Client lunch',amount:87.40,who:'Sarah Johnson',status:'Pending Approval'},
+      {id:'x4',date:'2025-06-11',category:'Office Supplies',desc:'Stationery & printer ink',amount:64.20,who:'Tom Chen',status:'Pending Approval'},
+    ],
+    payroll:[
+      {id:'p1',emp:'Sarah Johnson',gross:7083.33,tax:2125,ni:632,pension:283,period:'June 2025'},
+      {id:'p2',emp:'Marcus Williams',gross:6000,tax:1800,ni:539,pension:240,period:'June 2025'},
+      {id:'p3',emp:'Priya Patel',gross:5416.67,tax:1625,ni:487,pension:217,period:'June 2025'},
+      {id:'p4',emp:'Tom Chen',gross:4833.33,tax:1450,ni:435,pension:193,period:'June 2025'},
+    ],
+    absences:[
+      {id:'a1',emp:'Marcus Williams',start:'2025-06-16',end:'2025-06-20',type:'Annual Leave',status:'Approved',notes:'Summer holiday'},
+      {id:'a2',emp:'Priya Patel',start:'2025-06-03',end:'2025-06-03',type:'Sick',status:'Approved',notes:'Migraine'},
+      {id:'a3',emp:'Tom Chen',start:'2025-06-23',end:'2025-06-27',type:'Annual Leave',status:'Pending',notes:'Family trip'},
+    ],
+    holidays:[
+      {id:'h1',emp:'Marcus Williams',from:'2025-06-16',to:'2025-06-20',days:5,status:'Approved',notes:'Pre-booked'},
+      {id:'h2',emp:'Tom Chen',from:'2025-06-23',to:'2025-06-27',days:5,status:'Pending',notes:''},
+    ],
+    wfh:[
+      {id:'w1',emp:'Sarah Johnson',date:'2025-06-09',type:'Full Day',notes:'Focus day'},
+      {id:'w2',emp:'Priya Patel',date:'2025-06-10',type:'Full Day',notes:''},
+      {id:'w3',emp:'Tom Chen',date:'2025-06-11',type:'Morning Only',notes:'Afternoon at office'},
+    ],
+    calEvents:[
+      {id:'ce1',date:'2025-06-16',type:'leave',title:'Marcus – Annual Leave',person:'Marcus Williams'},
+      {id:'ce2',date:'2025-06-23',type:'leave',title:'Tom – Holiday Request',person:'Tom Chen'},
+      {id:'ce3',date:'2025-06-09',type:'wfh',title:'Sarah WFH',person:'Sarah Johnson'},
+      {id:'ce4',date:'2025-06-25',type:'meeting',title:'Board Review',person:''},
+    ],
+    scanned:[],
+    pdfExtracted:null,
+    calYear:2025, calMonth:5 // June (0-indexed)
+  };
+}
+
+// ── UTILITIES ────────────────────────────────────────────────
+function fmtDate(d){ return d.toISOString().split('T')[0]; }
+function fmt(n){ return '£'+Number(n||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function uid(){ return 'id'+Date.now()+Math.random().toString(36).slice(2,7); }
+function el(id){ return document.getElementById(id); }
+function today(){ return fmtDate(new Date()); }
+
+function toast(msg,type='success'){
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.textContent=msg;
+  el('toastContainer').appendChild(t);
+  setTimeout(()=>t.remove(),3200);
+}
+
+function showModal(id){ el(id).classList.add('open'); }
+function closeModal(id){ el(id).classList.remove('open'); }
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('modal-backdrop')) e.target.classList.remove('open');
+});
+
+function showPage(id,navEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el('page-'+id).classList.add('active');
+  if(navEl) navEl.classList.add('active');
+  else {
+    document.querySelectorAll('.nav-item').forEach(n=>{
+      if(n.getAttribute('onclick')?.includes("'"+id+"'")) n.classList.add('active');
+    });
+  }
+  const titles={dashboard:'Dashboard',calendar:'Calendar',sales:'Sales Receipts',expenses:'Expenses',payroll:'Payroll',employees:'Employee Database',contractors:'Contractor Database',eor:'EOR Database',absences:'Absence Management',holidays:'Holiday Management',wfh:'Work From Home',scanner:'Receipt Scanner',pdftools:'PDF → Spreadsheet'};
+  el('topbarTitle').innerHTML=titles[id]+' <span></span>';
+  renderPage(id);
+}
+
+function toggleSidebar(){ el('sidebar').classList.toggle('open'); }
+
+// ── LOGIN ────────────────────────────────────────────────────
+function buildLoginUsers(){
+  const grid=el('userSelectGrid');
+  grid.innerHTML='';
+  DB.users.forEach(u=>{
+    const d=document.createElement('div');
+    d.className='user-card';
+    d.onclick=()=>{
+      document.querySelectorAll('.user-card').forEach(c=>c.classList.remove('selected'));
+      d.classList.add('selected');
+      d.dataset.uid=u.id;
+      grid.dataset.selected=u.id;
+    };
+    d.innerHTML=`<div class="uc-avatar" style="background:${u.color}">${u.avatar}</div><div class="uc-name">${u.name}</div><div class="uc-role">${u.role}</div>`;
+    grid.appendChild(d);
+  });
+}
+
+function doLogin(){
+  const uid=el('userSelectGrid').dataset.selected;
+  if(!uid){toast('Please select a profile','error');return;}
+  currentUser=DB.users.find(u=>u.id===uid);
+  el('login-screen').style.display='none';
+  el('app').style.display='flex';
+  buildSidebarUser();
+  populatePersonDropdowns();
+  renderPage('dashboard');
+}
+
+function doLogout(){
+  currentUser=null;
+  el('login-screen').style.display='flex';
+  el('app').style.display='none';
+  buildLoginUsers();
+}
+
+function buildSidebarUser(){
+  el('sidebarUser').innerHTML=`<div class="user-avatar" style="background:${currentUser.color}">${currentUser.avatar}</div><div class="user-info"><div class="user-name">${currentUser.name}</div><div class="user-role">${currentUser.role}</div></div><div class="user-switch" onclick="doLogout()">Switch</div>`;
+}
+
+function populatePersonDropdowns(){
+  const names=DB.employees.map(e=>e.fname+' '+e.lname);
+  ['e_who','abs_emp','hol_emp','wfh_emp','pay_emp'].forEach(id=>{
+    const s=el(id); if(!s) return;
+    s.innerHTML=names.map(n=>`<option>${n}</option>`).join('');
+  });
+  const calSel=el('calEventPerson');
+  if(calSel) calSel.innerHTML='<option value="">— All Staff —</option>'+names.map(n=>`<option>${n}</option>`).join('');
+}
+
+// ── PAGE RENDERERS ───────────────────────────────────────────
+function renderPage(id){
+  ({dashboard:renderDashboard,calendar:renderCalendar,sales:renderSales,expenses:renderExpenses,payroll:renderPayroll,employees:renderEmployees,contractors:renderContractors,eor:renderEOR,absences:renderAbsences,holidays:renderHolidays,wfh:renderWFH,scanner:renderScanner,pdftools:()=>{}})[id]?.();
+}
+
+// DASHBOARD
+function renderDashboard(){
+  const totalSales=DB.sales.reduce((a,s)=>a+(+s.amount),0);
+  const totalExp=DB.expenses.reduce((a,e)=>a+(+e.amount),0);
+  const totalPayroll=DB.payroll.reduce((a,p)=>a+(+p.gross),0);
+  const pending=DB.expenses.filter(e=>e.status==='Pending Approval').length+DB.absences.filter(a=>a.status==='Pending').length;
+
+  el('kpiGrid').innerHTML=`
+    <div class="kpi kpi-accent"><div class="kpi-label">Total Revenue</div><div class="kpi-value">${fmt(totalSales)}</div><div class="kpi-sub"><span class="up">↑ 12%</span> vs last month</div></div>
+    <div class="kpi kpi-red"><div class="kpi-label">Total Expenses</div><div class="kpi-value">${fmt(totalExp)}</div><div class="kpi-sub"><span class="dn">↑ 4%</span> vs last month</div></div>
+    <div class="kpi kpi-green"><div class="kpi-label">Net Profit</div><div class="kpi-value">${fmt(totalSales-totalExp-totalPayroll)}</div><div class="kpi-sub"><span class="up">↑ 18%</span> vs last month</div></div>
+    <div class="kpi kpi-amber"><div class="kpi-label">Monthly Payroll</div><div class="kpi-value">${fmt(totalPayroll)}</div><div class="kpi-sub">${DB.payroll.length} employees</div></div>
+    <div class="kpi kpi-cyan"><div class="kpi-label">Headcount</div><div class="kpi-value">${DB.employees.length+DB.eor.length}</div><div class="kpi-sub">${DB.contractors.filter(c=>c.status==='Active').length} active contractors</div></div>
+    <div class="kpi kpi-red"><div class="kpi-label">Pending Approvals</div><div class="kpi-value">${pending}</div><div class="kpi-sub">Require action</div></div>
+  `;
+  el('pendingCount').textContent=pending;
+
+  // Workforce mini widget
+  const depts={};
+  DB.employees.forEach(e=>{ depts[e.dept]=(depts[e.dept]||0)+1; });
+  el('workforceWidget').innerHTML=Object.entries(depts).map(([d,n])=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span>${d}</span><strong>${n}</strong></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${(n/DB.employees.length)*100}%;background:var(--accent)"></div></div>
+    </div>`).join('')+`<div style="margin-top:12px;font-size:12px;color:var(--ink-3)">+${DB.eor.length} EOR • ${DB.contractors.filter(c=>c.status==='Active').length} Contractors</div>`;
+
+  // Pending approvals
+  const pend=[...DB.expenses.filter(e=>e.status==='Pending Approval').map(e=>({label:`Expense: ${e.desc}`,sub:e.who,amt:fmt(e.amount),type:'expense',id:e.id})),...DB.absences.filter(a=>a.status==='Pending').map(a=>({label:`Absence: ${a.type}`,sub:a.emp,amt:a.start,type:'absence',id:a.id}))];
+  el('pendingApprovals').innerHTML=pend.length?pend.map(p=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--surface-2)"><div style="flex:1"><div style="font-size:13px;font-weight:600">${p.label}</div><div style="font-size:11.5px;color:var(--ink-3)">${p.sub} • ${p.amt}</div></div><button class="btn btn-success btn-sm" onclick="approve('${p.type}','${p.id}')">✓</button><button class="btn btn-danger btn-sm" onclick="reject('${p.type}','${p.id}')">✕</button></div>`).join(''):'<div class="empty-state"><span class="em-icon">✅</span><p>No pending approvals</p></div>';
+
+  // Upcoming events
+  const evts=DB.calEvents.slice(0,4);
+  el('upcomingEvents').innerHTML=evts.map(e=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--surface-2)"><span class="cal-event ${e.type}" style="flex-shrink:0">${e.type}</span><div style="flex:1"><div style="font-size:13px;font-weight:600">${e.title}</div><div style="font-size:11.5px;color:var(--ink-3)">${e.date}</div></div></div>`).join('');
+
+  // Recent transactions
+  const txs=[...DB.sales.slice(-5)].reverse();
+  el('recentTxTable').innerHTML=buildTable(['Ref','Customer','Date','Amount','Category','Status'],txs.map(s=>[s.ref,s.customer,s.date,fmt(s.amount),s.category,statusBadge(s.status)]));
+
+  drawRevenueChart();
+}
+
+function drawRevenueChart(){
+  const canvas=el('revenueChart');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const w=canvas.offsetWidth||500; const h=180;
+  canvas.width=w; canvas.height=h;
+  const months=['Jan','Feb','Mar','Apr','May','Jun'];
+  const rev=[32000,38000,29000,44000,41000,37500];
+  const exp=[18000,21000,16000,24000,22000,19800];
+  const maxV=Math.max(...rev,...exp)*1.15;
+  const pad={t:10,r:10,b:30,l:48};
+  const cw=w-pad.l-pad.r; const ch=h-pad.t-pad.b;
+  ctx.clearRect(0,0,w,h);
+  // Grid
+  ctx.strokeStyle='#EDEEF5'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+ch*(1-i/4);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+    ctx.fillStyle='#9aa0b4'; ctx.font='10px Inter'; ctx.textAlign='right';
+    ctx.fillText('£'+Math.round(maxV*i/4/1000)+'k',pad.l-5,y+4);
+  }
+  // Bars
+  const bw=cw/months.length; const barW=bw*0.35;
+  months.forEach((m,i)=>{
+    const x=pad.l+bw*i+bw/2;
+    const rh=(rev[i]/maxV)*ch; const eh=(exp[i]/maxV)*ch;
+    ctx.fillStyle='rgba(67,97,238,0.75)'; ctx.beginPath(); ctx.roundRect(x-barW-2,pad.t+ch-rh,barW,rh,2); ctx.fill();
+    ctx.fillStyle='rgba(239,35,60,0.65)'; ctx.beginPath(); ctx.roundRect(x+2,pad.t+ch-eh,barW,eh,2); ctx.fill();
+    ctx.fillStyle='#9aa0b4'; ctx.font='10px Inter'; ctx.textAlign='center';
+    ctx.fillText(m,x,h-8);
+  });
+}
+
+// CALENDAR
+let calYear,calMonth;
+function renderCalendar(){
+  calYear=DB.calYear||2025; calMonth=DB.calMonth||5;
+  buildCal();
+}
+function buildCal(){
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  el('calMonthTitle').textContent=months[calMonth]+' '+calYear;
+  const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  el('calDayNames').innerHTML=dayNames.map(d=>`<div class="cal-day-name">${d}</div>`).join('');
+  const first=new Date(calYear,calMonth,1);
+  let startDow=first.getDay(); startDow=(startDow+6)%7;
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev=new Date(calYear,calMonth,0).getDate();
+  const todayStr=today();
+  let cells='';
+  for(let i=0;i<startDow;i++){
+    cells+=`<div class="cal-day other-month"><div class="cal-day-num">${daysInPrev-startDow+i+1}</div></div>`;
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const isToday=dateStr===todayStr;
+    const evts=DB.calEvents.filter(e=>e.date===dateStr);
+    cells+=`<div class="cal-day${isToday?' today':''}" onclick="calDayClick('${dateStr}')"><div class="cal-day-num">${d}</div>${evts.map(e=>`<div class="cal-event ${e.type}" title="${e.title}">${e.title.substring(0,12)}</div>`).join('')}</div>`;
+  }
+  const remaining=(7-(startDow+daysInMonth)%7)%7;
+  for(let i=1;i<=remaining;i++) cells+=`<div class="cal-day other-month"><div class="cal-day-num">${i}</div></div>`;
+  el('calDays').innerHTML=cells;
+}
+function calNav(dir){
+  calMonth+=dir;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  DB.calYear=calYear; DB.calMonth=calMonth; saveDB();
+  buildCal();
+}
+function calDayClick(dateStr){
+  el('calEventDate').value=dateStr;
+  el('calEventTitle').focus();
+}
+function addCalEvent(){
+  const d=el('calEventDate').value; const t=el('calEventType').value; const ti=el('calEventTitle').value; const p=el('calEventPerson').value;
+  if(!d||!ti){toast('Please fill date and title','error');return;}
+  DB.calEvents.push({id:uid(),date:d,type:t,title:ti,person:p});
+  saveDB(); buildCal(); el('calEventTitle').value=''; toast('Event added');
+}
+
+// SALES
+function renderSales(){
+  const total=DB.sales.reduce((a,s)=>a+(+s.amount),0);
+  const paid=DB.sales.filter(s=>s.status==='Paid').reduce((a,s)=>a+(+s.amount),0);
+  const pend=DB.sales.filter(s=>s.status==='Pending').reduce((a,s)=>a+(+s.amount),0);
+  el('salesKpi').innerHTML=`<div class="kpi kpi-accent"><div class="kpi-label">Total Revenue</div><div class="kpi-value">${fmt(total)}</div></div><div class="kpi kpi-green"><div class="kpi-label">Paid</div><div class="kpi-value">${fmt(paid)}</div></div><div class="kpi kpi-amber"><div class="kpi-label">Outstanding</div><div class="kpi-value">${fmt(pend)}</div></div><div class="kpi kpi-cyan"><div class="kpi-label">Receipts</div><div class="kpi-value">${DB.sales.length}</div></div>`;
+  el('salesTable').innerHTML=buildTable(['Ref','Date','Customer','Amount','VAT','Category','Status',''],
+    DB.sales.map(s=>[s.ref,s.date,s.customer,fmt(s.amount),fmt(s.vat),s.category,statusBadge(s.status),`<button class="btn btn-danger btn-sm" onclick="delItem('sales','${s.id}')">Delete</button>`]));
+}
+
+function addSale(){
+  const ref=el('s_ref').value||'INV-'+Date.now();
+  DB.sales.push({id:uid(),ref,date:el('s_date').value||today(),customer:el('s_cust').value||'Unknown',amount:+el('s_amt').value||0,vat:+el('s_vat').value||0,category:el('s_cat').value,status:el('s_status').value,notes:el('s_notes').value});
+  saveDB(); closeModal('addSaleModal'); renderSales(); toast('Sales receipt added');
+  ['s_ref','s_date','s_cust','s_amt','s_vat','s_notes'].forEach(id=>el(id).value='');
+}
+
+// EXPENSES
+function renderExpenses(){
+  const total=DB.expenses.reduce((a,e)=>a+(+e.amount),0);
+  const approved=DB.expenses.filter(e=>e.status==='Approved').reduce((a,e)=>a+(+e.amount),0);
+  const pend=DB.expenses.filter(e=>e.status==='Pending Approval').reduce((a,e)=>a+(+e.amount),0);
+  el('expKpi').innerHTML=`<div class="kpi kpi-red"><div class="kpi-label">Total Expenses</div><div class="kpi-value">${fmt(total)}</div></div><div class="kpi kpi-green"><div class="kpi-label">Approved</div><div class="kpi-value">${fmt(approved)}</div></div><div class="kpi kpi-amber"><div class="kpi-label">Pending</div><div class="kpi-value">${fmt(pend)}</div></div><div class="kpi kpi-cyan"><div class="kpi-label">Claims</div><div class="kpi-value">${DB.expenses.length}</div></div>`;
+  el('expTable').innerHTML=buildTable(['Date','Category','Description','Amount','Submitted by','Status',''],
+    DB.expenses.map(e=>[e.date,e.category,e.desc,fmt(e.amount),e.who,statusBadge(e.status),`<button class="btn btn-danger btn-sm" onclick="delItem('expenses','${e.id}')">Delete</button>`]));
+}
+function filterExpCategory(cat){
+  const rows=el('expTable').querySelectorAll('tbody tr');
+  rows.forEach(r=>{ r.style.display=(!cat||r.cells[1]?.textContent===cat)?'':'none'; });
+}
+function addExpense(){
+  DB.expenses.push({id:uid(),date:el('e_date').value||today(),category:el('e_cat').value,desc:el('e_desc').value,amount:+el('e_amt').value||0,who:el('e_who').value,status:el('e_status').value});
+  saveDB(); closeModal('addExpModal'); renderExpenses(); toast('Expense recorded');
+  ['e_date','e_desc','e_amt'].forEach(id=>el(id).value='');
+}
+
+// PAYROLL
+function renderPayroll(){
+  const total=DB.payroll.reduce((a,p)=>a+(+p.gross),0);
+  const tax=DB.payroll.reduce((a,p)=>a+(+p.tax),0);
+  const net=DB.payroll.reduce((a,p)=>a+(+p.gross-+p.tax-+p.ni-+p.pension),0);
+  el('payKpi').innerHTML=`<div class="kpi kpi-accent"><div class="kpi-label">Gross Payroll</div><div class="kpi-value">${fmt(total)}</div></div><div class="kpi kpi-red"><div class="kpi-label">Total Tax</div><div class="kpi-value">${fmt(tax)}</div></div><div class="kpi kpi-green"><div class="kpi-label">Net Pay</div><div class="kpi-value">${fmt(net)}</div></div><div class="kpi kpi-amber"><div class="kpi-label">Employees</div><div class="kpi-value">${DB.payroll.length}</div></div>`;
+  el('payrollTable').innerHTML=buildTable(['Employee','Gross Pay','Tax','NI','Pension','Net Pay','Period',''],
+    DB.payroll.map(p=>[p.emp,fmt(p.gross),fmt(p.tax),fmt(p.ni),fmt(p.pension),fmt(p.gross-p.tax-p.ni-p.pension),p.period,`<button class="btn btn-danger btn-sm" onclick="delItem('payroll','${p.id}')">Delete</button>`]));
+}
+function addPayrollEntry(){
+  const gross=+el('pay_gross').value||0,tax=+el('pay_tax').value||0,ni=+el('pay_ni').value||0,pension=+el('pay_pension').value||0;
+  DB.payroll.push({id:uid(),emp:el('pay_emp').value,gross,tax,ni,pension,period:el('pay_period').value||'June 2025'});
+  saveDB(); closeModal('addPayrollModal'); renderPayroll(); toast('Payroll entry added');
+}
+
+// EMPLOYEES
+function renderEmployees(){
+  el('empTable').innerHTML=buildTable(['Name','Email','Dept','Title','Contract','Salary','Start','Hol Used','Role',''],
+    DB.employees.map(e=>[e.fname+' '+e.lname,e.email,e.dept,e.title,e.contract,fmt(e.salary),e.start,`${e.hol_used||0}/${e.hol_allowance||25}`,`<span class="badge badge-blue">${e.role}</span>`,`<button class="btn btn-danger btn-sm" onclick="delItem('employees','${e.id}')">Remove</button>`]));
+}
+function addEmployee(){
+  const emp={id:uid(),fname:el('em_fname').value,lname:el('em_lname').value,email:el('em_email').value,dept:el('em_dept').value,title:el('em_title').value,salary:+el('em_salary').value||0,start:el('em_start').value||today(),contract:el('em_contract').value,hol_allowance:+el('em_hol').value||25,hol_used:0,role:el('em_role').value};
+  DB.employees.push(emp);
+  DB.users.push({id:uid(),name:emp.fname+' '+emp.lname,role:emp.role,avatar:emp.fname[0]+emp.lname[0],color:'#4361EE'});
+  saveDB(); closeModal('addEmpModal'); renderEmployees(); populatePersonDropdowns(); toast('Employee added');
+  ['em_fname','em_lname','em_email','em_title','em_salary','em_start'].forEach(id=>el(id).value='');
+}
+
+// CONTRACTORS
+function renderContractors(){
+  el('conTable').innerHTML=buildTable(['Name/Company','Email','Specialty','Day Rate','Start','End','IR35','Status',''],
+    DB.contractors.map(c=>[c.name,c.email,c.spec,fmt(c.rate),c.start,c.end,`<span class="badge ${c.ir35==='Inside IR35'?'badge-red':'badge-green'}">${c.ir35}</span>`,statusBadge(c.status),`<button class="btn btn-danger btn-sm" onclick="delItem('contractors','${c.id}')">Remove</button>`]));
+}
+function addContractor(){
+  DB.contractors.push({id:uid(),name:el('con_name').value,email:el('con_email').value,spec:el('con_spec').value,rate:+el('con_rate').value||0,start:el('con_start').value,end:el('con_end').value,ir35:el('con_ir35').value,status:el('con_status').value});
+  saveDB(); closeModal('addConModal'); renderContractors(); toast('Contractor added');
+}
+
+// EOR
+function renderEOR(){
+  el('eorTable').innerHTML=buildTable(['Name','Country','EOR Provider','Currency','Monthly Cost','Start','Role',''],
+    DB.eor.map(r=>[r.name,r.country,r.provider,r.currency,fmt(r.cost),r.start,r.role,`<button class="btn btn-danger btn-sm" onclick="delItem('eor','${r.id}')">Remove</button>`]));
+}
+function addEOR(){
+  DB.eor.push({id:uid(),name:el('eor_name').value,country:el('eor_country').value,provider:el('eor_provider').value,currency:el('eor_currency').value,cost:+el('eor_cost').value||0,start:el('eor_start').value||today(),role:el('eor_role').value});
+  saveDB(); closeModal('addEorModal'); renderEOR(); toast('EOR worker added');
+}
+
+// ABSENCES
+function renderAbsences(){
+  const sick=DB.absences.filter(a=>a.type==='Sick').length;
+  const al=DB.absences.filter(a=>a.type==='Annual Leave').length;
+  const pend=DB.absences.filter(a=>a.status==='Pending').length;
+  el('absKpi').innerHTML=`<div class="kpi kpi-red"><div class="kpi-label">Total Absences</div><div class="kpi-value">${DB.absences.length}</div></div><div class="kpi kpi-amber"><div class="kpi-label">Sick Days</div><div class="kpi-value">${sick}</div></div><div class="kpi kpi-accent"><div class="kpi-label">Annual Leave</div><div class="kpi-value">${al}</div></div><div class="kpi kpi-red"><div class="kpi-label">Pending</div><div class="kpi-value">${pend}</div></div>`;
+  const pends=DB.absences.filter(a=>a.status==='Pending');
+  el('pendingAbsTable').innerHTML=pends.length?buildTable(['Employee','Type','Start','End','Status',''],pends.map(a=>[a.emp,a.type,a.start,a.end,statusBadge(a.status),`<button class="btn btn-success btn-sm" onclick="approve('absence','${a.id}')">✓</button>`])):'<div class="empty-state"><span class="em-icon">✅</span><p>No pending requests</p></div>';
+  el('absTable').innerHTML=buildTable(['Employee','Type','Start','End','Days','Status',''],
+    DB.absences.map(a=>[a.emp,a.type,a.start,a.end,daysBetween(a.start,a.end),statusBadge(a.status)]));
+  // Mini bar chart
+  const types={'Sick':0,'Annual Leave':0,'Compassionate':0,'Other':0};
+  DB.absences.forEach(a=>{ if(types[a.type]!==undefined) types[a.type]++; else types['Other']++; });
+  const maxT=Math.max(...Object.values(types),1);
+  el('absChart').innerHTML=Object.entries(types).map(([t,n])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span>${t}</span><strong>${n}</strong></div><div class="progress-bar"><div class="progress-fill" style="width:${(n/maxT)*100}%;background:var(--red)"></div></div></div>`).join('');
+}
+function addAbsence(){
+  DB.absences.push({id:uid(),emp:el('abs_emp').value,start:el('abs_start').value,end:el('abs_end').value,type:el('abs_type').value,status:el('abs_status').value,notes:el('abs_notes').value});
+  saveDB(); closeModal('addAbsModal'); renderAbsences(); toast('Absence recorded');
+}
+
+// HOLIDAYS
+function renderHolidays(){
+  const pend=DB.holidays.filter(h=>h.status==='Pending').length;
+  el('holKpi').innerHTML=`<div class="kpi kpi-green"><div class="kpi-label">Total Requests</div><div class="kpi-value">${DB.holidays.length}</div></div><div class="kpi kpi-amber"><div class="kpi-label">Pending</div><div class="kpi-value">${pend}</div></div><div class="kpi kpi-accent"><div class="kpi-label">Days Taken (Avg)</div><div class="kpi-value">${Math.round(DB.employees.reduce((a,e)=>a+(e.hol_used||0),0)/Math.max(DB.employees.length,1))}</div></div>`;
+  el('holBalTable').innerHTML=buildTable(['Employee','Allowance','Used','Remaining'],DB.employees.map(e=>[e.fname+' '+e.lname,e.hol_allowance||25,e.hol_used||0,(e.hol_allowance||25)-(e.hol_used||0)]));
+  el('holPendTable').innerHTML=buildTable(['Employee','From','To','Days',''],DB.holidays.filter(h=>h.status==='Pending').map(h=>[h.emp,h.from,h.to,h.days,`<button class="btn btn-success btn-sm" onclick="approveHol('${h.id}')">✓ Approve</button>`]));
+  el('holTable').innerHTML=buildTable(['Employee','From','To','Days','Status',''],DB.holidays.map(h=>[h.emp,h.from,h.to,h.days,statusBadge(h.status)]));
+}
+function addHoliday(){
+  const from=el('hol_from').value,to=el('hol_to').value;
+  const days=daysBetween(from,to);
+  DB.holidays.push({id:uid(),emp:el('hol_emp').value,from,to,days,status:'Pending',notes:el('hol_notes').value});
+  saveDB(); closeModal('addHolModal'); renderHolidays(); toast('Holiday request submitted');
+}
+function approveHol(id){
+  const h=DB.holidays.find(x=>x.id===id); if(!h) return;
+  h.status='Approved';
+  const emp=DB.employees.find(e=>e.fname+' '+e.lname===h.emp);
+  if(emp) emp.hol_used=(emp.hol_used||0)+h.days;
+  saveDB(); renderHolidays(); toast('Holiday approved');
+}
+
+// WFH
+function renderWFH(){
+  const today_cnt=DB.wfh.filter(w=>w.date===today()).length;
+  const week=DB.wfh.filter(w=>w.date>=fmtDate(new Date(Date.now()-7*86400000))).length;
+  el('wfhKpi').innerHTML=`<div class="kpi kpi-cyan"><div class="kpi-label">WFH Today</div><div class="kpi-value">${today_cnt}</div></div><div class="kpi kpi-accent"><div class="kpi-label">This Week</div><div class="kpi-value">${week}</div></div><div class="kpi kpi-green"><div class="kpi-label">Total Logs</div><div class="kpi-value">${DB.wfh.length}</div></div>`;
+  el('wfhTable').innerHTML=buildTable(['Employee','Date','Type','Notes',''],DB.wfh.map(w=>[w.emp,w.date,w.type,w.notes||'—',`<button class="btn btn-danger btn-sm" onclick="delItem('wfh','${w.id}')">Remove</button>`]));
+  const depts={};
+  DB.wfh.forEach(w=>{
+    const emp=DB.employees.find(e=>e.fname+' '+e.lname===w.emp);
+    const d=emp?.dept||'Unknown';
+    depts[d]=(depts[d]||0)+1;
+  });
+  const maxD=Math.max(...Object.values(depts),1);
+  el('wfhDeptChart').innerHTML=Object.entries(depts).map(([d,n])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span>${d}</span><strong>${n} days</strong></div><div class="progress-bar"><div class="progress-fill" style="width:${(n/maxD)*100}%;background:var(--cyan)"></div></div></div>`).join('');
+}
+function addWFH(){
+  DB.wfh.push({id:uid(),emp:el('wfh_emp').value,date:el('wfh_date').value||today(),type:el('wfh_type').value,notes:el('wfh_notes').value});
+  saveDB(); closeModal('addWfhModal'); renderWFH(); toast('WFH day logged');
+}
+
+// RECEIPT SCANNER
+let scannedData=null;
+function renderScanner(){
+  el('scannedTable').innerHTML=DB.scanned.length?buildTable(['Date','Merchant','Amount','Category',''],DB.scanned.map(s=>[s.date,s.merchant,fmt(s.amount),s.category,`<button class="btn btn-danger btn-sm" onclick="delScanned('${s.id}')">Remove</button>`])):'<div class="empty-state"><span class="em-icon">📷</span><p>No scanned receipts yet</p></div>';
+}
+function handleScanDrop(e){ e.preventDefault(); el('scanUploadZone').classList.remove('drag-over'); const f=e.dataTransfer.files[0]; if(f) handleScanFile(f); }
+function handleScanFile(file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    if(file.type.startsWith('image/')){
+      el('scanImg').src=ev.target.result;
+      el('scanPreview').style.display='block';
+    }
+    simulateScan(file.name,ev.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+function simulateScan(name,data){
+  // Simulated OCR extraction
+  const merchants=['Costa Coffee','Tesco Express','Amazon Business','Uber','McDonald\'s','Staples','BP Garage','Pret A Manger'];
+  const merchant=merchants[Math.floor(Math.random()*merchants.length)];
+  const amount=(Math.random()*200+5).toFixed(2);
+  const vat=(amount*0.2).toFixed(2);
+  const d=today();
+  scannedData={date:d,merchant,amount:+amount,vat:+vat,category:'Expenses',ref:'SCN-'+Date.now()};
+  el('scanResult').innerHTML=`<div class="scan-result"><h4 style="font-size:13px;font-weight:700;margin-bottom:12px">📋 Extracted Data</h4><div class="scan-field"><span class="scan-field-label">Merchant</span><span class="scan-field-val">${merchant}</span></div><div class="scan-field"><span class="scan-field-label">Date</span><span class="scan-field-val">${d}</span></div><div class="scan-field"><span class="scan-field-label">Amount</span><span class="scan-field-val">${fmt(amount)}</span></div><div class="scan-field"><span class="scan-field-label">VAT</span><span class="scan-field-val">${fmt(vat)}</span></div><div class="scan-field"><span class="scan-field-label">File</span><span class="scan-field-val">${name}</span></div></div>`;
+  el('scanActions').style.display='block';
+  toast('Receipt scanned successfully','success');
+}
+function saveScannedReceipt(){
+  if(!scannedData){toast('No data to save','error');return;}
+  const cat=el('scanCategory').value;
+  scannedData.category=cat; scannedData.id=uid();
+  DB.scanned.push({...scannedData});
+  if(cat==='Expenses') DB.expenses.push({id:uid(),date:scannedData.date,category:'Other',desc:'Scanned: '+scannedData.merchant,amount:scannedData.amount,who:currentUser?.name||'Unknown',status:'Pending Approval'});
+  if(cat==='Sales Receipts') DB.sales.push({id:uid(),ref:'SCN-'+Date.now(),date:scannedData.date,customer:scannedData.merchant,amount:scannedData.amount,vat:scannedData.vat,category:'Other',status:'Pending',notes:'From scanner'});
+  saveDB(); renderScanner(); scannedData=null;
+  el('scanResult').innerHTML=''; el('scanActions').style.display='none'; el('scanPreview').style.display='none';
+  toast('Receipt saved to '+cat);
+}
+function delScanned(id){ DB.scanned=DB.scanned.filter(s=>s.id!==id); saveDB(); renderScanner(); }
+
+// PDF TOOLS
+let pdfExtractedData=null;
+function handlePdfDrop(e){ e.preventDefault(); el('pdfUploadZone').classList.remove('drag-over'); handlePdfFile(e.dataTransfer.files[0]); }
+function handlePdfFile(file){
+  if(!file){return;}
+  el('pdfStatus').innerHTML=`<div style="background:var(--surface-2);border-radius:8px;padding:12px;font-size:13px;color:var(--ink-3)">⏳ Processing <strong>${file.name}</strong>…</div>`;
+  setTimeout(()=>{ extractPdfData(file.name); },900);
+}
+function extractPdfData(name){
+  // Simulate extraction of tabular data from a PDF
+  const types=['invoice','bank statement','expense report'];
+  const t=types[Math.floor(Math.random()*types.length)];
+  const rows=[];
+  if(t==='invoice'){
+    rows.push(['Item','Quantity','Unit Price','Total']);
+    [['Consulting Services',1,1500,1500],['Software Licence',3,299,897],['Support Package',1,450,450],['Training Day',2,600,1200]].forEach(r=>rows.push(r));
+  } else if(t==='bank statement'){
+    rows.push(['Date','Description','Debit','Credit','Balance']);
+    [['2025-06-01','Opening Balance','','','12450.00'],['2025-06-03','Client Payment – Acme','','5000.00','17450.00'],['2025-06-05','Office Rent','2200.00','','15250.00'],['2025-06-08','AWS Cloud Services','342.50','','14907.50'],['2025-06-10','Payroll Run','23000.00','','−8092.50']].forEach(r=>rows.push(r));
+  } else {
+    rows.push(['Date','Employee','Category','Description','Amount','Status']);
+    [['2025-06-02','Marcus Williams','Travel','Train to Manchester','142.50','Approved'],['2025-06-05','Priya Patel','Software','Figma Licence','576.00','Approved'],['2025-06-09','Sarah Johnson','Meals','Client Lunch','87.40','Pending']].forEach(r=>rows.push(r));
+  }
+  pdfExtractedData=rows;
+  el('pdfStatus').innerHTML=`<div style="background:#e8faf5;border-radius:8px;padding:12px;font-size:13px;color:#059669">✅ Extracted <strong>${rows.length-1} rows</strong> from <strong>${name}</strong></div>`;
+  const header=rows[0]; const data=rows.slice(1);
+  el('pdfPreviewTable').innerHTML=buildTable(header,data);
+  el('pdfDownloadArea').style.display='block';
+}
+function downloadExtractedCSV(){
+  if(!pdfExtractedData){return;}
+  const csv=pdfExtractedData.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='extracted_data.csv'; a.click();
+  toast('CSV downloaded');
+}
+function saveToExpenses(){
+  if(!pdfExtractedData){return;}
+  const rows=pdfExtractedData.slice(1);
+  rows.forEach(r=>{ DB.expenses.push({id:uid(),date:r[0]||today(),category:'Other',desc:r[2]||'Imported',amount:parseFloat(String(r[r.length-2]).replace(/[^0-9.]/g,''))||0,who:r[1]||currentUser?.name||'Import',status:'Pending Approval'}); });
+  saveDB(); toast(rows.length+' rows saved to Expenses');
+}
+
+// SHARED ACTIONS
+function approve(type,id){
+  if(type==='expense'){const e=DB.expenses.find(x=>x.id===id);if(e)e.status='Approved';}
+  if(type==='absence'){const a=DB.absences.find(x=>x.id===id);if(a)a.status='Approved';}
+  saveDB(); renderPage(type==='expense'?'expenses':'absences'); renderDashboard(); toast('Approved');
+}
+function reject(type,id){
+  if(type==='expense'){const e=DB.expenses.find(x=>x.id===id);if(e)e.status='Rejected';}
+  if(type==='absence'){const a=DB.absences.find(x=>x.id===id);if(a)a.status='Rejected';}
+  saveDB(); renderDashboard(); toast('Rejected','error');
+}
+function delItem(store,id){
+  if(!confirm('Delete this record?')) return;
+  DB[store]=DB[store].filter(x=>x.id!==id);
+  saveDB(); renderPage(document.querySelector('.page.active').id.replace('page-',''));
+}
+
+// TABLE BUILDER
+function buildTable(headers,rows){
+  if(!rows.length) return '<div class="empty-state"><span class="em-icon">📭</span><p>No records yet</p></div>';
+  return `<table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function statusBadge(s){
+  const map={'Paid':'badge-green','Pending':'badge-amber','Pending Approval':'badge-amber','Overdue':'badge-red','Approved':'badge-green','Rejected':'badge-red','Active':'badge-green','On Hold':'badge-amber','Completed':'badge-gray','Outside IR35':'badge-green','Inside IR35':'badge-red','TBC':'badge-amber','Full-time':'badge-blue','Part-time':'badge-cyan','Fixed-term':'badge-purple'};
+  return `<span class="badge ${map[s]||'badge-gray'}">${s}</span>`;
+}
+
+function filterTable(tableId,q){
+  const rows=el(tableId)?.querySelectorAll('tbody tr');
+  if(!rows) return;
+  rows.forEach(r=>{ r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none'; });
+}
+
+function exportCSV(tableId,name){
+  const tbl=el(tableId)?.querySelector('table');
+  if(!tbl){toast('Nothing to export','error');return;}
+  let csv='';
+  tbl.querySelectorAll('tr').forEach(r=>{ csv+=Array.from(r.cells).map(c=>'"'+c.textContent.trim().replace(/"/g,'""')+'"').join(',')+'\n'; });
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download=name+'_'+today()+'.csv'; a.click();
+  toast('CSV exported');
+}
+
+function daysBetween(a,b){
+  if(!a||!b) return 0;
+  return Math.max(0,Math.round((new Date(b)-new Date(a))/(86400000))+1);
+}
+
+// ── BOOT ─────────────────────────────────────────────────────
+buildLoginUsers();
+el('calEventDate').value=today();
+el('wfh_date')&&(el('wfh_date').value=today());
+
+// responsive toggle
+if(window.innerWidth<900) el('menuToggle').style.display='flex';
+window.addEventListener('resize',()=>{ el('menuToggle').style.display=window.innerWidth<900?'flex':'none'; });
+</script>
+
+
+</body></html>
