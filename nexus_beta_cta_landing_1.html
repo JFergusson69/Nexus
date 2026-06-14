@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nexus Business Suite — Join the Beta</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:#06080F;color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(6,8,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);position:sticky;top:0;z-index:100}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-mark{width:34px;height:34px;background:#3D5AFE;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;flex-shrink:0}
+.nav-name{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.nav-name small{display:block;font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.8px;line-height:1}
+.nav-pill{font-size:11px;font-weight:700;letter-spacing:.6px;color:#7B9FFF;background:rgba(61,90,254,.12);border:1px solid rgba(61,90,254,.3);padding:5px 14px;border-radius:99px}
+.nav-btn{font-size:13px;font-weight:700;color:#fff;background:#3D5AFE;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;transition:opacity .15s;text-decoration:none;display:inline-block}
+.nav-btn:hover{opacity:.85}
+.hero{padding:90px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse at 50% 30%,rgba(61,90,254,.22) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(61,90,254,.1);border:1px solid rgba(61,90,254,.28);color:#7B9FFF;font-size:11px;font-weight:700;letter-spacing:.6px;padding:6px 14px;border-radius:99px;margin-bottom:26px}
+.pulse{width:7px;height:7px;border-radius:50%;background:#3D5AFE;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+h1{font-size:clamp(34px,5.5vw,62px);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:20px}
+.grad{background:linear-gradient(130deg,#6B8FFF 0%,#B78BFF 55%,#00D4B1 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.5);max-width:540px;margin:0 auto 36px;line-height:1.65}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+.btn-main{display:inline-flex;align-items:center;gap:8px;background:#3D5AFE;color:#fff;font-size:15px;font-weight:700;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;transition:transform .18s;text-decoration:none}
+.btn-main:hover{transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.75);font-size:15px;font-weight:600;padding:14px 26px;border-radius:10px;cursor:pointer;transition:background .15s;text-decoration:none}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.hero-social{display:flex;align-items:center;justify-content:center;gap:10px}
+.avatars{display:flex}
+.av{width:32px;height:32px;border-radius:50%;border:2px solid #06080F;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.hero-trust{font-size:12px;color:rgba(255,255,255,.28);font-weight:600;letter-spacing:.3px}
+.stats{display:flex;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+.stat{flex:1;padding:28px 20px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.stat:last-child{border-right:none}
+.stat-n{font-size:30px;font-weight:900;letter-spacing:-1.5px;line-height:1}
+.stat-l{font-size:11px;color:rgba(255,255,255,.3);font-weight:600;letter-spacing:.5px;margin-top:5px}
+section{padding:72px 40px}
+.sec-inner{max-width:1060px;margin:0 auto}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:1.5px;color:#7B9FFF;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:'';width:16px;height:2px;background:#3D5AFE;border-radius:1px}
+.sec-h{font-size:clamp(26px,3.5vw,40px);font-weight:900;letter-spacing:-1.2px;line-height:1.1;margin-bottom:14px}
+.sec-p{font-size:16px;color:rgba(255,255,255,.45);line-height:1.65;max-width:480px}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:48px}
+.feat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:26px;transition:border-color .18s}
+.feat:hover{border-color:rgba(61,90,254,.45)}
+.feat-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.feat-t{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-bottom:7px}
+.feat-d{font-size:13.5px;color:rgba(255,255,255,.42);line-height:1.65}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+.step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;position:relative;overflow:hidden}
+.step-n{width:28px;height:28px;border-radius:8px;background:#3D5AFE;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-bottom:16px}
+.step-t{font-size:16px;font-weight:800;margin-bottom:7px}
+.step-d{font-size:13.5px;color:rgba(255,255,255,.42);line-height:1.6}
+.perks{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:48px}
+.perk{display:flex;align-items:flex-start;gap:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px}
+.perk-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.perk-t{font-size:14.5px;font-weight:800;margin-bottom:4px}
+.perk-d{font-size:13px;color:rgba(255,255,255,.38);line-height:1.55}
+.test-wrap{background:rgba(61,90,254,.08);border:1px solid rgba(61,90,254,.2);border-radius:18px;padding:52px;text-align:center;margin-top:72px}
+.test-q{font-size:clamp(18px,2.5vw,26px);font-weight:900;line-height:1.35;letter-spacing:-.5px;max-width:600px;margin:0 auto 20px}
+.test-attr{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.6px;font-weight:700}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+.plan{border-radius:14px;padding:26px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03)}
+.plan.featured{border-color:rgba(61,90,254,.5);background:rgba(61,90,254,.08);position:relative}
+.plan-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.8px;padding:4px 10px;border-radius:99px;margin-bottom:14px}
+.plan-price{font-size:36px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:3px}
+.plan-per{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:18px}
+.plan-feats{list-style:none;margin-bottom:22px}
+.plan-feats li{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.65);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.plan-feats li:last-child{border:none}
+.ck{color:#00C87A;font-weight:900;font-size:14px}
+.plan-btn{display:block;width:100%;padding:12px;border-radius:8px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:center;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);transition:background .15s;text-decoration:none}
+.plan-btn:hover{background:rgba(255,255,255,.13)}
+.plan-btn.p{background:#3D5AFE;border:none;color:#fff}
+.plan-btn.p:hover{background:#2a47e8}
+.hot-tag{position:absolute;top:14px;right:14px;background:#3D5AFE;color:#fff;font-size:10px;font-weight:800;padding:4px 10px;border-radius:99px;letter-spacing:.4px}
+.cta-final{text-align:center;padding:100px 40px;position:relative;overflow:hidden}
+.cta-glow2{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(61,90,254,.18) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cta-h{font-size:clamp(30px,4.5vw,52px);font-weight:900;letter-spacing:-1.5px;margin-bottom:16px;position:relative;z-index:1}
+.cta-sub{font-size:17px;color:rgba(255,255,255,.45);margin-bottom:36px;position:relative;z-index:1}
+.signup-row{display:flex;gap:8px;max-width:440px;margin:0 auto;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;position:relative;z-index:1}
+.signup-row input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:14px;padding:7px 10px;font-family:inherit}
+.signup-row input::placeholder{color:rgba(255,255,255,.28)}
+.signup-row button{background:#3D5AFE;color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:7px;border:none;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.signup-row button:hover{opacity:.88}
+.signup-note{font-size:12px;color:rgba(255,255,255,.22);margin-top:12px;position:relative;z-index:1}
+.mini-stats{display:flex;justify-content:center;gap:36px;margin-top:48px;flex-wrap:wrap;position:relative;z-index:1}
+.mini-s{text-align:center}
+.mini-n{font-size:24px;font-weight:900;letter-spacing:-1px}
+.mini-l{font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.5px;margin-top:3px}
+footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:rgba(255,255,255,.22)}
+.foot-brand{display:flex;align-items:center;gap:8px;font-weight:700;color:rgba(255,255,255,.45)}
+.cmp-table{width:100%;border-collapse:collapse;margin-top:40px;font-size:13.5px}
+.cmp-table th{padding:12px 16px;text-align:center;font-size:11px;font-weight:700;letter-spacing:.6px;color:rgba(255,255,255,.35);border-bottom:1px solid rgba(255,255,255,.08);white-space:nowrap}
+.cmp-table th.nexus-h{color:#6B8FFF;font-size:12px;letter-spacing:.8px}
+.cmp-table td{padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;color:rgba(255,255,255,.55);font-size:13px}
+.cmp-table td:first-child{font-weight:600;color:rgba(255,255,255,.75);font-size:13px}
+.cmp-table td.nexus-col{background:rgba(61,90,254,.07);color:#fff;font-weight:700;border-left:1px solid rgba(61,90,254,.25);border-right:1px solid rgba(61,90,254,.25)}
+.cmp-table th.nexus-h{background:rgba(61,90,254,.12);border-left:1px solid rgba(61,90,254,.3);border-right:1px solid rgba(61,90,254,.3);border-radius:10px 10px 0 0}
+.cmp-table tbody tr:last-child td{border-bottom:none}
+.cmp-table tbody tr:hover td{background:rgba(255,255,255,.02)}
+.cmp-table tbody tr:hover td.nexus-col{background:rgba(61,90,254,.12)}
+.tick-y{color:#00C87A;font-size:16px;font-weight:900}
+.tick-n{color:rgba(255,255,255,.18);font-size:16px}
+.tick-p{color:#FF6B35;font-size:12px;font-weight:700}
+.cmp-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;overflow-x:auto;margin-top:40px}
+.cmp-note{font-size:11.5px;color:rgba(255,255,255,.25);margin-top:16px;line-height:1.6;font-style:italic}
+.saving-banner{display:flex;align-items:center;justify-content:center;gap:16px;background:rgba(0,200,122,.08);border:1px solid rgba(0,200,122,.2);border-radius:12px;padding:20px 28px;margin-top:32px;flex-wrap:wrap;text-align:center}
+.saving-big{font-size:28px;font-weight:900;letter-spacing:-1px;color:#00C87A}
+.saving-label{font-size:13px;color:rgba(255,255,255,.5);line-height:1.5}
+@media(max-width:720px){
+  .steps,.pricing,.perks{grid-template-columns:1fr}
+  .stats{flex-wrap:wrap}
+  .stat{flex:1 1 50%;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+  .nav{padding:14px 18px}
+  section{padding:52px 18px}
+  .hero{padding:80px 18px 40px}
+  .test-wrap{padding:36px 18px}
+  footer{flex-direction:column;gap:10px;text-align:center}
+  .cmp-table th,.cmp-table td{padding:10px 10px;font-size:11.5px}
+}
+</style>
+</head>
+<body>
+
+<h2 class="sr-only">Nexus Business Suite — beta tester call to action landing page</h2>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-mark">N</div>
+    <div class="nav-name">Nexus <small>BUSINESS SUITE</small></div>
+  </div>
+  <div class="nav-pill">&#9679; BETA NOW OPEN</div>
+  <a class="nav-btn" href="#signup">Join free</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+
+  <!-- Floating card illustrations -->
+  <div style="position:absolute;top:60px;left:0;right:0;pointer-events:none;overflow:hidden;height:320px">
+    <svg width="100%" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <pattern id="gr" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+          <path d="M48 0H0V48" fill="none" stroke="rgba(255,255,255,.035)" stroke-width=".5"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="320" fill="url(#gr)"/>
+      <!-- Left KPI card -->
+      <rect x="30" y="80" width="200" height="110" rx="12" fill="#111527" stroke="rgba(61,90,254,.3)" stroke-width="1"/>
+      <rect x="30" y="80" width="200" height="4" rx="2" fill="#3D5AFE"/>
+      <text x="46" y="102" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.35)" font-weight="700" letter-spacing=".8">REVENUE</text>
+      <text x="46" y="126" font-family="Inter,sans-serif" font-size="22" fill="#fff" font-weight="900">&#163;37,500</text>
+      <text x="46" y="144" font-family="Inter,sans-serif" font-size="9" fill="#00C87A">&#8593; 12% this month</text>
+      <rect x="46" y="158" width="14" height="18" rx="2" fill="#3D5AFE" opacity=".7"/>
+      <rect x="64" y="152" width="14" height="24" rx="2" fill="#3D5AFE" opacity=".7"/>
+      <rect x="82" y="146" width="14" height="30" rx="2" fill="#3D5AFE" opacity=".85"/>
+      <rect x="100" y="140" width="14" height="36" rx="2" fill="#3D5AFE"/>
+      <rect x="118" y="150" width="14" height="26" rx="2" fill="#3D5AFE" opacity=".75"/>
+      <rect x="136" y="143" width="14" height="33" rx="2" fill="#3D5AFE" opacity=".9"/>
+      <!-- Right headcount card -->
+      <rect x="970" y="70" width="200" height="100" rx="12" fill="#111527" stroke="rgba(0,200,122,.2)" stroke-width="1"/>
+      <rect x="970" y="70" width="200" height="4" rx="2" fill="#00C87A"/>
+      <text x="986" y="92" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.35)" font-weight="700" letter-spacing=".8">HEADCOUNT</text>
+      <text x="986" y="116" font-family="Inter,sans-serif" font-size="22" fill="#fff" font-weight="900">47 people</text>
+      <circle cx="990" cy="148" r="12" fill="#3D5AFE"/>
+      <text x="990" y="152" font-family="Inter,sans-serif" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">SJ</text>
+      <circle cx="1016" cy="148" r="12" fill="#7B2FBE"/>
+      <text x="1016" y="152" font-family="Inter,sans-serif" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">MW</text>
+      <circle cx="1042" cy="148" r="12" fill="#00C87A"/>
+      <text x="1042" y="152" font-family="Inter,sans-serif" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">PP</text>
+      <circle cx="1068" cy="148" r="12" fill="#FF6B35"/>
+      <text x="1068" y="152" font-family="Inter,sans-serif" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">TC</text>
+      <text x="1090" y="152" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.35)">+43</text>
+      <!-- Top beta pill -->
+      <rect x="490" y="30" width="220" height="34" rx="17" fill="#1A1E30" stroke="rgba(61,90,254,.3)" stroke-width="1"/>
+      <circle cx="508" cy="47" r="5" fill="#00C87A"/>
+      <text x="520" y="51" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.7)" font-weight="600">53 beta spots remaining</text>
+      <!-- Bottom-left pending card -->
+      <rect x="220" y="210" width="160" height="60" rx="10" fill="#111527" stroke="rgba(255,107,53,.25)" stroke-width="1"/>
+      <text x="236" y="232" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.35)" font-weight="700" letter-spacing=".8">PENDING</text>
+      <rect x="236" y="240" width="30" height="16" rx="8" fill="rgba(255,107,53,.2)"/>
+      <text x="251" y="251" font-family="Inter,sans-serif" font-size="9" fill="#FF6B35" text-anchor="middle" font-weight="700">2</text>
+      <text x="272" y="251" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.55)">approvals</text>
+      <text x="236" y="264" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.4)">Action required</text>
+      <!-- Bottom-right holiday card -->
+      <rect x="820" y="200" width="170" height="60" rx="10" fill="#111527" stroke="rgba(123,47,190,.25)" stroke-width="1"/>
+      <text x="836" y="222" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.35)" font-weight="700" letter-spacing=".8">HOLIDAY</text>
+      <text x="836" y="244" font-family="Inter,sans-serif" font-size="14" fill="#fff" font-weight="800">Marcus</text>
+      <rect x="836" y="250" width="56" height="14" rx="7" fill="rgba(0,200,122,.15)"/>
+      <text x="864" y="260" font-family="Inter,sans-serif" font-size="9" fill="#00C87A" text-anchor="middle" font-weight="700">Approved</text>
+      <!-- Dashed connector lines -->
+      <line x1="230" y1="135" x2="490" y2="47" stroke="rgba(61,90,254,.15)" stroke-width=".5" stroke-dasharray="4,4"/>
+      <line x1="970" y1="120" x2="710" y2="47" stroke="rgba(61,90,254,.15)" stroke-width=".5" stroke-dasharray="4,4"/>
+    </svg>
+  </div>
+
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge"><div class="pulse"></div> LIMITED BETA &#8212; 53 SPOTS LEFT</div>
+    <h1>The business tool your<br>team <span class="grad">actually wants</span></h1>
+    <p class="hero-sub">One file. No subscription. No cloud. Employees, payroll, expenses, holidays, absences, receipts &#8212; all yours forever.</p>
+    <div class="hero-btns">
+      <a class="btn-main" href="#signup">&#128640; Get beta access &#8212; free</a>
+      <a class="btn-ghost" href="#features">See what&#8217;s inside &#8595;</a>
+    </div>
+    <div class="hero-social">
+      <div class="avatars">
+        <div class="av" style="background:#3D5AFE">SJ</div>
+        <div class="av" style="background:#7B2FBE">MW</div>
+        <div class="av" style="background:#00C87A">PP</div>
+        <div class="av" style="background:#FF6B35">TC</div>
+        <div class="av" style="background:#E94560">AL</div>
+      </div>
+      <div class="hero-trust">47 testers joined this week &middot; 53 spots left</div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD PREVIEW -->
+<div style="max-width:900px;margin:0 auto;padding:0 24px 64px">
+  <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 32px 80px rgba(0,0,0,.6)">
+    <div style="background:#141828;padding:11px 14px;display:flex;align-items:center;gap:7px">
+      <div style="width:11px;height:11px;border-radius:50%;background:#FF5F57"></div>
+      <div style="width:11px;height:11px;border-radius:50%;background:#FFBD2E"></div>
+      <div style="width:11px;height:11px;border-radius:50%;background:#28C840"></div>
+      <div style="flex:1;background:rgba(255,255,255,.05);border-radius:5px;padding:4px 10px;margin:0 10px;font-size:10px;color:rgba(255,255,255,.3);font-family:'Inter',sans-serif">nexusdash.app &#8212; Business Dashboard</div>
+    </div>
+    <svg width="100%" viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" aria-label="Nexus dashboard preview showing sidebar navigation, KPI cards, revenue chart, and transaction table">
+      <rect width="860" height="420" fill="#0D1121"/>
+      <!-- Sidebar -->
+      <rect width="178" height="420" fill="#111527"/>
+      <rect x="10" y="14" width="158" height="34" rx="8" fill="#1E2545"/>
+      <rect x="17" y="22" width="17" height="17" rx="4" fill="#3D5AFE"/>
+      <text x="40" y="34" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="#fff">Nexus</text>
+      <text x="40" y="45" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)" letter-spacing=".6">BUSINESS SUITE</text>
+      <rect x="10" y="60" width="158" height="28" rx="6" fill="#1E2545"/>
+      <rect x="14" y="67" width="3" height="14" rx="1.5" fill="#3D5AFE"/>
+      <text x="25" y="79" font-family="Inter,sans-serif" font-size="10" fill="#fff" font-weight="700">Dashboard</text>
+      <text x="16" y="106" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Calendar</text>
+      <text x="16" y="126" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Sales Receipts</text>
+      <text x="16" y="146" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Expenses</text>
+      <text x="16" y="166" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Payroll</text>
+      <rect x="10" y="182" width="158" height="1" fill="rgba(255,255,255,.05)"/>
+      <text x="16" y="200" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.22)" font-weight="700" letter-spacing="1">PEOPLE</text>
+      <text x="16" y="217" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Employees</text>
+      <text x="16" y="234" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Contractors</text>
+      <text x="16" y="251" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">EOR Database</text>
+      <rect x="10" y="265" width="158" height="1" fill="rgba(255,255,255,.05)"/>
+      <text x="16" y="283" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.22)" font-weight="700" letter-spacing="1">WORKFORCE</text>
+      <text x="16" y="300" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Absences</text>
+      <text x="16" y="317" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Holiday Mgmt</text>
+      <text x="16" y="334" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Work From Home</text>
+      <rect x="10" y="348" width="158" height="1" fill="rgba(255,255,255,.05)"/>
+      <text x="16" y="366" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.22)" font-weight="700" letter-spacing="1">DOCUMENTS</text>
+      <text x="16" y="383" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">Receipt Scanner</text>
+      <text x="16" y="400" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.38)">PDF to Spreadsheet</text>
+      <rect x="0" y="400" width="178" height="20" fill="rgba(0,0,0,.3)"/>
+      <circle cx="20" cy="410" r="8" fill="#3D5AFE"/>
+      <text x="20" y="414" font-family="Inter,sans-serif" font-size="7" fill="#fff" text-anchor="middle" font-weight="700">SJ</text>
+      <text x="34" y="408" font-family="Inter,sans-serif" font-size="9" fill="#fff" font-weight="600">Sarah Johnson</text>
+      <text x="34" y="418" font-family="Inter,sans-serif" font-size="7" fill="rgba(255,255,255,.3)">Admin</text>
+      <!-- Topbar -->
+      <rect x="178" y="0" width="682" height="42" fill="#111527"/>
+      <text x="194" y="26" font-family="Inter,sans-serif" font-size="13" fill="#fff" font-weight="800">Dashboard</text>
+      <rect x="690" y="9" width="74" height="24" rx="6" fill="#3D5AFE"/>
+      <text x="727" y="25" font-family="Inter,sans-serif" font-size="10" fill="#fff" text-anchor="middle" font-weight="700">Scan Receipt</text>
+      <rect x="616" y="9" width="68" height="24" rx="6" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/>
+      <text x="650" y="25" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.65)" text-anchor="middle">+ Add</text>
+      <!-- KPI cards -->
+      <rect x="192" y="54" width="136" height="64" rx="9" fill="#1A1E30" stroke="rgba(61,90,254,.3)" stroke-width=".5"/>
+      <rect x="192" y="54" width="136" height="3" rx="1.5" fill="#3D5AFE"/>
+      <text x="204" y="73" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.32)" font-weight="700" letter-spacing=".6">REVENUE</text>
+      <text x="204" y="95" font-family="Inter,sans-serif" font-size="19" fill="#fff" font-weight="900">&#163;37,500</text>
+      <text x="204" y="108" font-family="Inter,sans-serif" font-size="8" fill="#00C87A">&#8593; 12% month</text>
+      <rect x="336" y="54" width="136" height="64" rx="9" fill="#1A1E30" stroke="rgba(229,57,53,.25)" stroke-width=".5"/>
+      <rect x="336" y="54" width="136" height="3" rx="1.5" fill="#E53935"/>
+      <text x="348" y="73" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.32)" font-weight="700" letter-spacing=".6">EXPENSES</text>
+      <text x="348" y="95" font-family="Inter,sans-serif" font-size="19" fill="#fff" font-weight="900">&#163;4,870</text>
+      <text x="348" y="108" font-family="Inter,sans-serif" font-size="8" fill="#E53935">&#8593; 4% month</text>
+      <rect x="480" y="54" width="136" height="64" rx="9" fill="#1A1E30" stroke="rgba(0,200,122,.2)" stroke-width=".5"/>
+      <rect x="480" y="54" width="136" height="3" rx="1.5" fill="#00C87A"/>
+      <text x="492" y="73" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.32)" font-weight="700" letter-spacing=".6">NET PROFIT</text>
+      <text x="492" y="95" font-family="Inter,sans-serif" font-size="19" fill="#fff" font-weight="900">&#163;9,297</text>
+      <text x="492" y="108" font-family="Inter,sans-serif" font-size="8" fill="#00C87A">&#8593; 18% month</text>
+      <rect x="624" y="54" width="136" height="64" rx="9" fill="#1A1E30" stroke="rgba(255,107,53,.2)" stroke-width=".5"/>
+      <rect x="624" y="54" width="136" height="3" rx="1.5" fill="#FF6B35"/>
+      <text x="636" y="73" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.32)" font-weight="700" letter-spacing=".6">PAYROLL</text>
+      <text x="636" y="95" font-family="Inter,sans-serif" font-size="19" fill="#fff" font-weight="900">&#163;23,333</text>
+      <text x="636" y="108" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.32)">4 employees</text>
+      <!-- Chart -->
+      <rect x="192" y="130" width="356" height="176" rx="9" fill="#1A1E30" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+      <text x="206" y="151" font-family="Inter,sans-serif" font-size="11" fill="#fff" font-weight="700">Revenue vs Expenses</text>
+      <rect x="206" y="162" width="8" height="8" rx="2" fill="#3D5AFE"/>
+      <text x="218" y="170" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.45)">Revenue</text>
+      <rect x="264" y="162" width="8" height="8" rx="2" fill="#E53935"/>
+      <text x="276" y="170" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.45)">Expenses</text>
+      <rect x="216" y="259" width="16" height="30" rx="2" fill="#3D5AFE" opacity=".75"/>
+      <rect x="234" y="271" width="16" height="18" rx="2" fill="#E53935" opacity=".6"/>
+      <rect x="258" y="243" width="16" height="46" rx="2" fill="#3D5AFE" opacity=".8"/>
+      <rect x="276" y="257" width="16" height="32" rx="2" fill="#E53935" opacity=".6"/>
+      <rect x="300" y="224" width="16" height="65" rx="2" fill="#3D5AFE" opacity=".85"/>
+      <rect x="318" y="241" width="16" height="48" rx="2" fill="#E53935" opacity=".65"/>
+      <rect x="342" y="232" width="16" height="57" rx="2" fill="#3D5AFE" opacity=".8"/>
+      <rect x="360" y="248" width="16" height="41" rx="2" fill="#E53935" opacity=".6"/>
+      <rect x="384" y="214" width="16" height="75" rx="2" fill="#3D5AFE"/>
+      <rect x="402" y="232" width="16" height="57" rx="2" fill="#E53935" opacity=".7"/>
+      <rect x="426" y="219" width="16" height="70" rx="2" fill="#3D5AFE" opacity=".9"/>
+      <rect x="444" y="239" width="16" height="50" rx="2" fill="#E53935" opacity=".65"/>
+      <line x1="206" y1="289" x2="530" y2="289" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+      <text x="224" y="300" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)">Jan</text>
+      <text x="266" y="300" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)">Feb</text>
+      <text x="308" y="300" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)">Mar</text>
+      <text x="350" y="300" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)">Apr</text>
+      <text x="392" y="300" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)">May</text>
+      <text x="434" y="300" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)">Jun</text>
+      <!-- Pending approvals -->
+      <rect x="556" y="130" width="204" height="176" rx="9" fill="#1A1E30" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+      <text x="570" y="151" font-family="Inter,sans-serif" font-size="11" fill="#fff" font-weight="700">Pending approvals</text>
+      <rect x="728" y="137" width="18" height="16" rx="8" fill="#E53935"/>
+      <text x="737" y="149" font-family="Inter,sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="800">2</text>
+      <rect x="566" y="160" width="182" height="44" rx="7" fill="rgba(255,255,255,.04)"/>
+      <text x="578" y="178" font-family="Inter,sans-serif" font-size="10" fill="#fff" font-weight="600">Expense: Client lunch</text>
+      <text x="578" y="193" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.32)">Sarah J. &#8212; &#163;87.40</text>
+      <rect x="718" y="169" width="18" height="16" rx="4" fill="#00C87A"/>
+      <text x="727" y="180" font-family="Inter,sans-serif" font-size="9" fill="#fff" text-anchor="middle" font-weight="800">&#10003;</text>
+      <rect x="566" y="210" width="182" height="44" rx="7" fill="rgba(255,255,255,.04)"/>
+      <text x="578" y="228" font-family="Inter,sans-serif" font-size="10" fill="#fff" font-weight="600">Holiday: Tom Chen</text>
+      <text x="578" y="243" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.32)">23&#8211;27 Jun &#8212; 5 days</text>
+      <rect x="718" y="219" width="18" height="16" rx="4" fill="#00C87A"/>
+      <text x="727" y="230" font-family="Inter,sans-serif" font-size="9" fill="#fff" text-anchor="middle" font-weight="800">&#10003;</text>
+      <!-- Transactions -->
+      <rect x="192" y="318" width="568" height="96" rx="9" fill="#1A1E30" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+      <text x="206" y="337" font-family="Inter,sans-serif" font-size="11" fill="#fff" font-weight="700">Recent transactions</text>
+      <rect x="192" y="342" width="568" height="18" fill="rgba(255,255,255,.035)"/>
+      <text x="208" y="354" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)" font-weight="700" letter-spacing=".5">REF</text>
+      <text x="310" y="354" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)" font-weight="700" letter-spacing=".5">CUSTOMER</text>
+      <text x="470" y="354" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)" font-weight="700" letter-spacing=".5">AMOUNT</text>
+      <text x="570" y="354" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,.28)" font-weight="700" letter-spacing=".5">STATUS</text>
+      <text x="208" y="374" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.65)">INV-2025-001</text>
+      <text x="310" y="374" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.65)">Acme Corp</text>
+      <text x="470" y="374" font-family="Inter,sans-serif" font-size="9" fill="#fff" font-weight="700">&#163;12,500</text>
+      <rect x="566" y="364" width="36" height="13" rx="6" fill="rgba(0,200,122,.15)"/>
+      <text x="584" y="374" font-family="Inter,sans-serif" font-size="8" fill="#00C87A" text-anchor="middle" font-weight="700">Paid</text>
+      <line x1="206" y1="382" x2="752" y2="382" stroke="rgba(255,255,255,.05)" stroke-width=".5"/>
+      <text x="208" y="398" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.65)">INV-2025-002</text>
+      <text x="310" y="398" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,.65)">TechNova Inc</text>
+      <text x="470" y="398" font-family="Inter,sans-serif" font-size="9" fill="#fff" font-weight="700">&#163;18,000</text>
+      <rect x="562" y="388" width="44" height="13" rx="6" fill="rgba(255,107,53,.15)"/>
+      <text x="584" y="398" font-family="Inter,sans-serif" font-size="8" fill="#FF6B35" text-anchor="middle" font-weight="700">Pending</text>
+    </svg>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-n" style="color:#6B8FFF">13</div><div class="stat-l">MODULES INCLUDED</div></div>
+  <div class="stat"><div class="stat-n" style="color:#00C87A">100%</div><div class="stat-l">OFFLINE &#8212; YOUR DATA</div></div>
+  <div class="stat"><div class="stat-n" style="color:#FF6B35">&#163;0</div><div class="stat-l">MONTHLY FEE</div></div>
+  <div class="stat"><div class="stat-n" style="color:#B78BFF">1</div><div class="stat-l">FILE TO DOWNLOAD</div></div>
+</div>
+
+<!-- FEATURES -->
+<section id="features" style="background:rgba(255,255,255,.015)">
+  <div class="sec-inner">
+    <div class="sec-label">What&#8217;s inside</div>
+    <h2 class="sec-h">Everything your business<br>runs on &#8212; one place</h2>
+    <p class="sec-p">Nexus replaces five or six separate tools most small businesses pay for every month.</p>
+
+    <!-- Module pills SVG -->
+    <div style="margin:32px 0 0;overflow:hidden">
+      <svg width="100%" viewBox="0 0 1060 56" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0" y="10" width="116" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="58" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">Sales receipts</text>
+        <rect x="124" y="10" width="106" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="177" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">Expenses</text>
+        <rect x="238" y="10" width="96" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="286" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">Payroll</text>
+        <rect x="342" y="10" width="114" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="399" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">Employees</text>
+        <rect x="464" y="10" width="118" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="523" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">Contractors</text>
+        <rect x="590" y="10" width="82" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="631" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">EOR</text>
+        <rect x="680" y="10" width="110" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="735" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">Absences</text>
+        <rect x="798" y="10" width="108" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="852" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">Holidays</text>
+        <rect x="914" y="10" width="68" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="948" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">WFH</text>
+        <rect x="990" y="10" width="66" height="32" rx="16" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+        <text x="1023" y="30" font-family="Inter,sans-serif" font-size="11" fill="rgba(255,255,255,.65)" font-weight="600" text-anchor="middle">PDF</text>
+      </svg>
+    </div>
+
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-icon" style="background:rgba(61,90,254,.15)">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#6B8FFF" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="feat-t">Offline &amp; private by design</div>
+        <div class="feat-d">Your data never leaves your device. No cloud, no server, no GDPR headaches. Works without internet. Yours forever.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon" style="background:rgba(0,200,122,.12)">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00C87A" stroke-width="1.8"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="feat-t">Scan any receipt instantly</div>
+        <div class="feat-d">Drag and drop any image or PDF receipt. Fields extracted automatically and filed into the right category.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon" style="background:rgba(183,139,255,.12)">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#B78BFF" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="feat-t">Full people management</div>
+        <div class="feat-d">Employees, contractors and EOR workers in one database. Holiday balances, absences, WFH &#8212; all tracked and exportable.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon" style="background:rgba(255,107,53,.12)">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#FF6B35" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="feat-t">Payroll register</div>
+        <div class="feat-d">Gross, tax, NI, pension per employee per period. Export to CSV for your accountant in one click.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon" style="background:rgba(0,200,122,.1)">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00C87A" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="feat-t">Holiday &amp; absence flows</div>
+        <div class="feat-d">Staff submit requests, managers approve, balances update automatically. No more email chains.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon" style="background:rgba(61,90,254,.15)">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#6B8FFF" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="feat-t">Live dashboard &amp; CSV export</div>
+        <div class="feat-d">KPI cards, revenue charts, pending approvals &#8212; all live. Export every table to CSV in one click.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="sec-inner">
+    <div class="sec-label">How it works</div>
+    <h2 class="sec-h">Up and running in 60 seconds</h2>
+
+    <!-- SVG process illustration -->
+    <svg width="100%" viewBox="0 0 860 130" xmlns="http://www.w3.org/2000/svg" style="margin:36px 0 40px" aria-hidden="true">
+      <rect x="0" y="20" width="240" height="90" rx="12" fill="#111527" stroke="rgba(61,90,254,.3)" stroke-width="1"/>
+      <circle cx="28" cy="48" r="12" fill="#3D5AFE"/>
+      <text x="28" y="52" font-family="Inter,sans-serif" font-size="11" fill="#fff" text-anchor="middle" font-weight="800">1</text>
+      <text x="50" y="44" font-family="Inter,sans-serif" font-size="12" fill="#fff" font-weight="800">Download the file</text>
+      <text x="14" y="70" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.4)">Single .html file &#8212; under 100KB</text>
+      <text x="14" y="86" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.4)">No install, no account needed</text>
+      <line x1="248" y1="65" x2="302" y2="65" stroke="rgba(61,90,254,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <polygon points="302,61 310,65 302,69" fill="#3D5AFE"/>
+      <rect x="310" y="20" width="240" height="90" rx="12" fill="#111527" stroke="rgba(61,90,254,.3)" stroke-width="1"/>
+      <circle cx="338" cy="48" r="12" fill="#3D5AFE"/>
+      <text x="338" y="52" font-family="Inter,sans-serif" font-size="11" fill="#fff" text-anchor="middle" font-weight="800">2</text>
+      <text x="360" y="44" font-family="Inter,sans-serif" font-size="12" fill="#fff" font-weight="800">Double-click to open</text>
+      <text x="324" y="70" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.4)">Opens in any browser instantly</text>
+      <text x="324" y="86" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.4)">Pick your profile and go</text>
+      <line x1="558" y1="65" x2="612" y2="65" stroke="rgba(61,90,254,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <polygon points="612,61 620,65 612,69" fill="#3D5AFE"/>
+      <rect x="620" y="20" width="240" height="90" rx="12" fill="#111527" stroke="rgba(0,200,122,.3)" stroke-width="1"/>
+      <circle cx="648" cy="48" r="12" fill="#00C87A"/>
+      <text x="648" y="52" font-family="Inter,sans-serif" font-size="11" fill="#fff" text-anchor="middle" font-weight="800">3</text>
+      <text x="668" y="44" font-family="Inter,sans-serif" font-size="12" fill="#fff" font-weight="800">Test and tell us</text>
+      <text x="634" y="70" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.4)">Explore all 13 modules</text>
+      <text x="634" y="86" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,.4)">Fill feedback form &#8212; shape roadmap</text>
+    </svg>
+  </div>
+</section>
+
+<!-- PERKS -->
+<section style="background:rgba(255,255,255,.015)">
+  <div class="sec-inner">
+    <div class="sec-label">Beta perks</div>
+    <h2 class="sec-h">Why join now?</h2>
+    <p class="sec-p">Beta testers get exclusive benefits that disappear the moment we launch publicly.</p>
+    <div class="perks">
+      <div class="perk">
+        <div class="perk-icon" style="background:rgba(61,90,254,.15)">&#9854;</div>
+        <div><div class="perk-t">Lifetime access &#8212; free</div><div class="perk-d">Beta testers get the full tool plus every future update at no charge, forever. Public price will be &#163;49+.</div></div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon" style="background:rgba(0,200,122,.12)">&#128506;</div>
+        <div><div class="perk-t">Shape the roadmap</div><div class="perk-d">Your feedback goes directly to the builder. The most-requested features get built first.</div></div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon" style="background:rgba(255,107,53,.12)">&#127885;</div>
+        <div><div class="perk-t">Founding tester credit</div><div class="perk-d">Your name on the product page as a Founding Beta Tester &#8212; a permanent badge of honour.</div></div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon" style="background:rgba(183,139,255,.12)">&#9889;</div>
+        <div><div class="perk-t">First access to new modules</div><div class="perk-d">Invoicing, mobile app, Xero integration &#8212; beta testers get early access before anyone else.</div></div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon" style="background:rgba(61,90,254,.15)">&#128172;</div>
+        <div><div class="perk-t">Direct line to the builder</div><div class="perk-d">Reply to our email. No support tickets, no bots. A real conversation with the person who built it.</div></div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon" style="background:rgba(0,200,122,.1)">&#127873;</div>
+        <div><div class="perk-t">Referral bonuses</div><div class="perk-d">Every person you refer earns you a free month of our upcoming Pro cloud tier when it launches.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE COMPARE -->
+<section id="compare" style="background:rgba(255,255,255,.015)">
+  <div class="sec-inner">
+    <div class="sec-label">How we compare</div>
+    <h2 class="sec-h">One tool.<br>A fraction of the cost.</h2>
+    <p class="sec-p">Other platforms charge per employee, per month, forever. Nexus is yours for a one-time payment — with more built-in features than any single competitor.</p>
+
+    <!-- Savings banner -->
+    <div class="saving-banner">
+      <div>
+        <div class="saving-big">Save up to &#163;8,000/yr</div>
+        <div class="saving-label">vs. combining leading HR + expense + payroll tools for a 10-person team</div>
+      </div>
+      <svg width="2" height="48" viewBox="0 0 2 48" aria-hidden="true"><line x1="1" y1="0" x2="1" y2="48" stroke="rgba(0,200,122,.2)" stroke-width="2"/></svg>
+      <div>
+        <div class="saving-big">&#163;49</div>
+        <div class="saving-label">one-time · lifetime access · no hidden fees</div>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="cmp-wrap">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;width:200px">Feature</th>
+            <th class="nexus-h">&#10022; Nexus</th>
+            <th>B&#8202;&#8203;</th>
+            <th>G&#8202;&#8203;</th>
+            <th>R&#8202;&#8203;</th>
+            <th>E&#8202;&#8203;</th>
+            <th>D&#8202;&#8203;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- PRICING -->
+          <tr>
+            <td colspan="7" style="background:rgba(255,255,255,.03);font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.25);padding:8px 16px">PRICING</td>
+          </tr>
+          <tr>
+            <td>Monthly cost (10 people)</td>
+            <td class="nexus-col">&#163;0 / month</td>
+            <td>&#163;85&#8211;220</td>
+            <td>&#163;110&#8211;180</td>
+            <td>&#163;80&#8211;250+</td>
+            <td>&#163;40&#8211;90</td>
+            <td>&#163;250&#8211;500</td>
+          </tr>
+          <tr>
+            <td>One-time purchase option</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Free tier available</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span> Always</td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-p">Limited</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Hidden add-on fees</td>
+            <td class="nexus-col"><span class="tick-y">Never</span></td>
+            <td><span class="tick-p">Yes</span></td>
+            <td><span class="tick-p">Yes</span></td>
+            <td><span class="tick-p">Yes</span></td>
+            <td><span class="tick-p">Yes</span></td>
+            <td><span class="tick-p">Yes</span></td>
+          </tr>
+          <!-- HR -->
+          <tr>
+            <td colspan="7" style="background:rgba(255,255,255,.03);font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.25);padding:8px 16px">HR &amp; PEOPLE</td>
+          </tr>
+          <tr>
+            <td>Employee database</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-p">Basic</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Contractor database</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-p">Partial</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>EOR worker database</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-p">Costly</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Holiday management</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Absence management</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-p">Partial</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Work from home tracking</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <!-- FINANCE -->
+          <tr>
+            <td colspan="7" style="background:rgba(255,255,255,.03);font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.25);padding:8px 16px">FINANCE</td>
+          </tr>
+          <tr>
+            <td>Sales receipts</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-p">Partial</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Expense tracking &amp; approval</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-p">Basic</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Payroll register</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-p">Add-on</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>CSV export (all modules)</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-p">Partial</span></td>
+            <td><span class="tick-p">Partial</span></td>
+            <td><span class="tick-p">Partial</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <!-- DOCUMENTS -->
+          <tr>
+            <td colspan="7" style="background:rgba(255,255,255,.03);font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.25);padding:8px 16px">DOCUMENTS &amp; SCANNING</td>
+          </tr>
+          <tr>
+            <td>Receipt scanner</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>PDF to spreadsheet</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <!-- PRIVACY -->
+          <tr>
+            <td colspan="7" style="background:rgba(255,255,255,.03);font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.25);padding:8px 16px">PRIVACY &amp; SETUP</td>
+          </tr>
+          <tr>
+            <td>100% offline &#8212; no cloud</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Data stays on your device</td>
+            <td class="nexus-col"><span class="tick-y">&#10003;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+            <td><span class="tick-n">&#10005;</span></td>
+          </tr>
+          <tr>
+            <td>Setup time</td>
+            <td class="nexus-col">60 seconds</td>
+            <td>Days&#8211;weeks</td>
+            <td>Hours&#8211;days</td>
+            <td>Days&#8211;weeks</td>
+            <td>Hours</td>
+            <td>Days</td>
+          </tr>
+          <tr>
+            <td>Internet required to use</td>
+            <td class="nexus-col"><span class="tick-y">Never</span></td>
+            <td><span class="tick-p">Always</span></td>
+            <td><span class="tick-p">Always</span></td>
+            <td><span class="tick-p">Always</span></td>
+            <td><span class="tick-p">Always</span></td>
+            <td><span class="tick-p">Always</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cmp-note">&#42; Competitors shown by initial only. Cost estimates based on publicly available pricing for a 10-person team as of 2026. Competitor features vary by plan &#8212; check their sites for the latest. Nexus does not process live payroll or file taxes &#8212; it is a register and management tool.</p>
+
+    <!-- Bottom CTA nudge -->
+    <div style="margin-top:36px;text-align:center">
+      <a href="#signup" class="btn-main" style="display:inline-flex">Get Nexus free during beta &#8594;</a>
+      <div style="font-size:12px;color:rgba(255,255,255,.25);margin-top:12px">No credit card &middot; No subscription &middot; Yours forever</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section>
+  <div class="sec-inner">
+    <div class="test-wrap">
+      <svg width="60" height="44" viewBox="0 0 60 44" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 18px;display:block" aria-hidden="true">
+        <text x="0" y="40" font-family="Georgia,serif" font-size="72" fill="rgba(61,90,254,.35)">"</text>
+      </svg>
+      <p class="test-q">"I&#8217;ve been paying &#163;340 a month across three tools to do what Nexus does in a single file. The fact it&#8217;s offline and I own it completely is a game-changer for a business our size."</p>
+      <div class="test-attr" style="margin-top:20px">EARLY BETA TESTER &middot; OFFICE MANAGER &middot; 34-PERSON COMPANY</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section style="background:rgba(255,255,255,.015)">
+  <div class="sec-inner">
+    <div class="sec-label">Pricing</div>
+    <h2 class="sec-h">Join beta free.<br>Pay when you love it.</h2>
+    <p class="sec-p">The public price goes up after beta ends. Lock in lifetime access now.</p>
+    <div class="pricing">
+      <div class="plan">
+        <div class="plan-badge" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4)">BETA</div>
+        <div class="plan-price">Free</div>
+        <div class="plan-per">during beta period</div>
+        <ul class="plan-feats">
+          <li><span class="ck">&#10003;</span> Full dashboard &#8212; all 13 modules</li>
+          <li><span class="ck">&#10003;</span> CSV export everywhere</li>
+          <li><span class="ck">&#10003;</span> 100% offline and private</li>
+          <li><span class="ck">&#10003;</span> Founding tester credit</li>
+          <li><span class="ck">&#10003;</span> Direct builder access</li>
+        </ul>
+        <a href="#signup" class="plan-btn">Get free beta access</a>
+      </div>
+      <div class="plan featured">
+        <div class="hot-tag">MOST POPULAR</div>
+        <div class="plan-badge" style="background:rgba(61,90,254,.2);color:#7B9FFF">LAUNCH</div>
+        <div class="plan-price">&#163;49</div>
+        <div class="plan-per">one-time &middot; lifetime access</div>
+        <ul class="plan-feats">
+          <li><span class="ck">&#10003;</span> Everything in Beta</li>
+          <li><span class="ck">&#10003;</span> 12 months of free updates</li>
+          <li><span class="ck">&#10003;</span> Priority email support</li>
+          <li><span class="ck">&#10003;</span> Custom branding option</li>
+          <li><span class="ck">&#10003;</span> Early feature access</li>
+        </ul>
+        <a href="#signup" class="plan-btn p">Pre-order at launch price</a>
+      </div>
+      <div class="plan">
+        <div class="plan-badge" style="background:rgba(0,200,122,.12);color:#00C87A">TEAM</div>
+        <div class="plan-price">&#163;99</div>
+        <div class="plan-per">one-time &middot; team up to 10</div>
+        <ul class="plan-feats">
+          <li><span class="ck">&#10003;</span> Everything in Launch</li>
+          <li><span class="ck">&#10003;</span> Custom user profiles</li>
+          <li><span class="ck">&#10003;</span> Your logo and branding</li>
+          <li><span class="ck">&#10003;</span> Onboarding video call</li>
+          <li><span class="ck">&#10003;</span> Lifetime updates</li>
+        </ul>
+        <a href="#signup" class="plan-btn">Get team access</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="cta-final" id="signup">
+  <div class="cta-glow2"></div>
+  <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:.18" aria-hidden="true">
+    <circle cx="200" cy="200" r="180" fill="none" stroke="#3D5AFE" stroke-width=".5"/>
+    <circle cx="200" cy="200" r="140" fill="none" stroke="#3D5AFE" stroke-width=".5"/>
+    <circle cx="200" cy="200" r="100" fill="none" stroke="#3D5AFE" stroke-width=".5"/>
+    <circle cx="200" cy="200" r="60" fill="none" stroke="#3D5AFE" stroke-width=".5"/>
+    <circle cx="200" cy="200" r="20" fill="none" stroke="#3D5AFE" stroke-width="1"/>
+    <circle cx="200" cy="200" r="6" fill="#3D5AFE"/>
+  </svg>
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge" style="margin-bottom:22px"><div class="pulse"></div> 53 BETA SPOTS REMAINING</div>
+    <h2 class="cta-h">Ready to run your<br>business smarter?</h2>
+    <p class="cta-sub">Drop your email. We&#8217;ll send the file and onboarding guide within the hour.</p>
+    <div class="signup-row">
+      <input type="email" id="emailIn" placeholder="your@email.com" />
+      <button onclick="doSignup()">Join beta free &#8594;</button>
+    </div>
+    <div class="signup-note" id="sigNote">No spam. No credit card. Just the tool and a short feedback form.</div>
+    <div class="mini-stats">
+      <div class="mini-s"><div class="mini-n" style="color:#6B8FFF">100%</div><div class="mini-l">OFFLINE</div></div>
+      <div class="mini-s"><div class="mini-n" style="color:#00C87A">&#163;0</div><div class="mini-l">TO JOIN BETA</div></div>
+      <div class="mini-s"><div class="mini-n" style="color:#FF6B35">&lt;60s</div><div class="mini-l">TO GET STARTED</div></div>
+      <div class="mini-s"><div class="mini-n" style="color:#B78BFF">&#8734;</div><div class="mini-l">LIFETIME ACCESS</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-brand">
+    <div class="nav-mark" style="width:26px;height:26px;font-size:12px">N</div>
+    Nexus Business Suite
+  </div>
+  <div>Beta v1.0 &middot; Built for small businesses</div>
+  <div style="display:flex;gap:18px">
+    <span style="cursor:pointer">Privacy</span>
+    <span style="cursor:pointer">Contact: joannefergusson@gmx.co.uk</span>
+  </div>
+</footer>
+
+<script>
+function doSignup(){
+  var inp=document.getElementById('emailIn');
+  var note=document.getElementById('sigNote');
+  var v=inp.value.trim();
+  if(!v||v.indexOf('@')<0){
+    note.textContent='Please enter a valid email address.';
+    note.style.color='#E53935';
+    return;
+  }
+  var s=JSON.parse(localStorage.getItem('nx_beta')||'[]');
+  s.push({email:v,date:new Date().toISOString()});
+  localStorage.setItem('nx_beta',JSON.stringify(s));
+  inp.value='';
+  note.textContent='You\'re in! Check your inbox \u2014 we\'ll be in touch within the hour.';
+  note.style.color='#00C87A';
+  note.style.fontSize='14px';
+}
+document.getElementById('emailIn').addEventListener('keydown',function(e){
+  if(e.key==='Enter') doSignup();
+});
+</script>
+</body>
+</html>
