@@ -1,0 +1,5 @@
+# Static site — no build step. Publish the repository root,
+# where index.html lives, so the homepage is served at "/".
+[build]
+  publish = "."
+  command = ""
