@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>You're on the list — Nexus Business Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:'Inter',system-ui,sans-serif;background:#06080F;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;-webkit-font-smoothing:antialiased;text-align:center;position:relative;overflow:hidden}
+.glow{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(61,90,254,.18) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:560px}
+.emoji{font-size:64px;margin-bottom:20px}
+h1{font-size:clamp(30px,4.5vw,46px);font-weight:900;letter-spacing:-1.5px;margin-bottom:16px;line-height:1.1}
+.grad{background:linear-gradient(130deg,#6B8FFF 0%,#B78BFF 55%,#00D4B1 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+p{font-size:17px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:12px}
+.sub{font-size:14px;color:rgba(255,255,255,.3);margin-bottom:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#3D5AFE;color:#fff;font-size:15px;font-weight:700;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;transition:transform .18s}
+.btn:hover{transform:translateY(-2px)}
+.mark{width:34px;height:34px;background:#3D5AFE;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;margin-bottom:28px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="wrap">
+  <div class="mark">N</div>
+  <div class="emoji">&#127881;</div>
+  <h1>You&#8217;re on the <span class="grad">list!</span></h1>
+  <p>Thanks for joining the Nexus beta. Jo-Anne will email you within the hour with your free download link and onboarding guide.</p>
+  <p class="sub">While you wait &#8212; share Nexus with another small business owner who&#8217;s still paying too much for software.</p>
+  <a class="btn" href="/">&#8592; Back to home</a>
+</div>
+</body>
+</html>
